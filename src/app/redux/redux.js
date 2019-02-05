@@ -1,7 +1,6 @@
 import { createReducer, createAction } from 'redux-starter-kit'
 
-export const increment = createAction('counter/increment')
-export const decrement = createAction('counter/decrement')
+// Table of Contacts
 
 export const saveTable = createAction('table/savecontacts')
 
@@ -11,12 +10,16 @@ export const saveTableReducer = createReducer(
   [saveTable]: (state, action) => state = action.payload
 })
 
-const counterReducer = createReducer(0, {
-  [increment]: (state, action) => state + action.payload,
-  [decrement]: (state, action) => state - action.payload
+// fetchServer sendSMS
+
+export const sndSMSserver = createAction('fetchServer/sendSMS')
+
+export const sndSMSserverReducer = createReducer({},
+{
+  [sndSMSserver]: (state, action) => state = action.payload
 })
 
 export default {
   saveTableReducer,
-  counterReducer
+  sndSMSserverReducer
 };

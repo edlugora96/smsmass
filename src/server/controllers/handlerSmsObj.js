@@ -37,8 +37,7 @@ class handlerSms
   {
     if (this.phone!= '' && this.message!= '' && this.long) 
     {
-      var mgLg = this.message.length/160;
-      console.log(mgLg)
+      
       /*
       this.port.write("AT+CMGF=1" );
       this.port.write('\r' );

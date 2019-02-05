@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import HeaderHome from './components/HeaderHome';
-import { saveTable } from './redux/redux.js';
+import { saveTable, sndSMSserver } from './redux/redux.js';
 import handlerContactsObj from './shared/utils/hlrCntcsObj.js';
 import store from './redux/store.js';
 import TableOfContacts from './components/TableOfContacts';
+import fetchServer from './shared/api/fetchServer.js';
 import './style/App.css';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +85,11 @@ class App extends Component {
             <textarea className="form-control App-header-textarea" rows="5"></textarea>
             <p id="charterCounter">Max 480 charter</p>
           </div>
-          <button className="btn btn-primary">Start to Send</button>
+          <button onClick={(e)=>{e.preventDefault();e.stopPropagation(); 
+            this.props.sndSMSserver
+            (
+                fetchServer.sendSMS({"phone":"04267961962", "message": "Lorem ipsum dolor sit"})
+            )}} className="btn btn-primary">Start to Send</button>
         </form>
       </div>
     );
@@ -96,6 +100,7 @@ const mapStateToProps = (state) => ({
     ...store.getState()
 })
 const mapDispatchToProps = {
-  saveTable
+  saveTable,
+  sndSMSserver
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
