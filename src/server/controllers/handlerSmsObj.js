@@ -13,12 +13,11 @@ const portConst = new SerialPort("COM8", {
 });
 class handlerSms 
 {
-  constructor(mg, ph, lg=false) 
+  constructor(mg, ph) 
   {
     this.port = portConst;
     this.phone = ph;
     this.message = mg;
-    this.long = lg;
     this.response;
   }
   read()
@@ -33,28 +32,10 @@ class handlerSms
       return this.response;
     } )  
   }
-  sendALongMessage()
-  {
-    if (this.phone!= '' && this.message!= '' && this.long) 
-    {
-      var mgLg = this.message.length/160;
-      console.log(mgLg)
-      /*
-      this.port.write("AT+CMGF=1" );
-      this.port.write('\r' );
-      this.port.write("AT+CMGS=\"");
-      this.port.write(this.phone);
-      this.port.write('"')
-      this.port.write('\r');
-      this.port.write(this.message); 
-      this.port.write(Buffer([0x1A]));
-      this.port.write('^z');
-      */
-    }
-  }
+
   send()
   {
-    if (this.phone!= '' && this.message!= '' && !this.long) 
+    if (this.phone!= '' && this.message!= '') 
     {
       this.port.write("AT+CMGF=1" );
       this.port.write('\r' );
@@ -67,6 +48,7 @@ class handlerSms
       this.port.write('^z');
     }
   }
+
   setData()
   {
     var promiseGetData = new Promise( (resolve, reject) => { 
