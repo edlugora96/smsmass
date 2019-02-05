@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import fetchServer from './shared/utils/fetchServer.js';
+import FormComponent from './components/FormComponent';
 import handlerContactsObj from './shared/utils/hlrCntcsObj.js';
 import HeaderHome from './components/HeaderHome';
 import { saveTable, sendSMSserver } from './redux/redux.js';
@@ -66,37 +66,8 @@ class App extends Component {
         :
         <HeaderHome saveTableReducer={this.props.saveTableReducer}  onFileLoad={this.onFileLoad} />
       }
-
-        <form className="App-header-form col-4">
-          <h3>The Massive <br/>Message</h3><br/>
-          <div className="App-header-form-group form-group">
-            <ul className="nav nav-pills">
-              <li className="nav-item">
-                <a className="nav-link active App-header-longSms" href="#">Long SMS</a>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle bg-light App-header-varibles" href="#">Variables</a>
-                <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">Action</a>
-                  <a className="dropdown-item" href="#">Another action</a>
-                  <a className="dropdown-item" href="#">Something else here</a>
-                  <a className="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>
-            </ul>
-            <div id="dvCSV"></div>
-            <textarea className="form-control App-header-textarea" rows="5"></textarea>
-            <p id="charterCounter">Max 480 charter</p>
-          </div>
-          <button 
-            onClick={(e)=>
-              {
-                e.preventDefault();
-                e.stopPropagation(); 
-                this.props.sendSMSserver(fetchServer.sendSms({"phone":"04267961962","message": "Lorem ipsum dolor sit"}))
-              }} 
-            className="btn btn-primary">Start to Send</button>
-        </form>
+        <FormComponent></FormComponent>
+        
       </div>
     );
   }

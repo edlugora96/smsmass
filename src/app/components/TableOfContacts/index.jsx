@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import store from '../../redux/store.js';
+import EnhancedTable from './materialTable.jsx';
 
 class headerHome extends Component {
   constructor(props) {
     super(props);
     this.state={};
   } 
-  componentDidMount(){
+  /*componentDidMount(){
     let body = window.localStorage.getItem('saveTable').split("\n"),
         arrayBody = [], htmlBody=[];
     for (var i = 1; i < body.length; i++) {
@@ -31,13 +32,14 @@ class headerHome extends Component {
     htmlBody.map((res, key)=>{
       tbodyContact.innerHTML += res
     })
-  }
+  }*/
   render() {
     let body = window.localStorage.getItem('saveTable').split("\n");
 
     return (
       <header className="App-header col-8">
-        <table className=" table table-responsive table-hover table-sm table-dark">
+        <EnhancedTable/>
+        {/*<table className=" table table-responsive table-hover table-sm table-dark">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -50,8 +52,7 @@ class headerHome extends Component {
           </thead>    
           <tbody id="bodyTable">
           </tbody>
-        </table>
-        
+        </table>*/}
       </header>
     );
   }

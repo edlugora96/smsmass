@@ -27,7 +27,7 @@ label {
 .App-header-drop-box-drag-over{
   border: 0.2rem dashed rgba(196,219,246,1);
   border-radius: 0.3rem;
-  animation: App-header-drop-box-drag-over-opacity infinite 250ms linear;
+  animation: App-header-drop-box-drag-over-opacity infinite 500ms linear;
 }
 .App-header-drop-box {
   padding: 5rem;
@@ -92,7 +92,9 @@ label {
 .table{
   width: 60vw;
 }
-
+.block {
+  display: block !important;
+}
 @keyframes App-logo-opacity {
   50% {
     opacity: 0.5;
