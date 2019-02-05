@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import HeaderHome from './components/HeaderHome';
-import { saveTable } from './redux/redux.js';
+
+import fetchServer from './shared/utils/fetchServer.js';
 import handlerContactsObj from './shared/utils/hlrCntcsObj.js';
+import HeaderHome from './components/HeaderHome';
+import { saveTable, sendSMSserver } from './redux/redux.js';
 import store from './redux/store.js';
 import TableOfContacts from './components/TableOfContacts';
+
 import './style/App.css';
 
 class App extends Component {
@@ -85,7 +88,14 @@ class App extends Component {
             <textarea className="form-control App-header-textarea" rows="5"></textarea>
             <p id="charterCounter">Max 480 charter</p>
           </div>
-          <button className="btn btn-primary">Start to Send</button>
+          <button 
+            onClick={(e)=>
+              {
+                e.preventDefault();
+                e.stopPropagation(); 
+                this.props.sendSMSserver(fetchServer.sendSms({"phone":"04267961962","message": "Lorem ipsum dolor sit"}))
+              }} 
+            className="btn btn-primary">Start to Send</button>
         </form>
       </div>
     );
@@ -96,6 +106,7 @@ const mapStateToProps = (state) => ({
     ...store.getState()
 })
 const mapDispatchToProps = {
-  saveTable
+  saveTable,
+  sendSMSserver
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

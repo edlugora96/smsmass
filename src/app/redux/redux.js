@@ -15,12 +15,16 @@ export const saveTableReducer = createReducer(
 export const sendSMSserver = createAction('serverSend/sendSMS')
 
 export const sendSMSserverReducer = createReducer(
-0,
+{},
 {
   [sendSMSserver]: (state, action) => { 
-    console.log(action.payload)
-    state = 10 
-    return [state]
+    action.payload.then(res => {
+      console.log(res)
+      state = res
+      return [state, res]
+
+    })
+    
   }
 })
 

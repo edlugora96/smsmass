@@ -1,4 +1,4 @@
-import axios from 'axios';
+import 'isomorphic-fetch';
 import queryString from 'query-string';
 
 export function apiEndpoint(endpoint, qs, fetchingFrom) {
@@ -39,7 +39,7 @@ export function apiOptions(options = {}) {
 }
 
 
-export function axiosFetch (endPoint, options = {}, query = false) {
+export function axiosFetch (endpoint, options = {}, query = false) {
   let qs;
   const { fetchingFrom = 'client' } = options;
   delete options.fetchFrom;
@@ -51,11 +51,11 @@ export function axiosFetch (endPoint, options = {}, query = false) {
   const fetchOptions = apiOptions(options);
   const fetchEndpoint = apiEndpoint(endpoint, qs, fetchingFrom);
 
-  return axios(fetchEndpoint, fetchOptions).then(response => response.json());
+  return fetch(fetchEndpoint, fetchOptions).then(response => response)
 }
 
 class fetchServer {
-  static saveData(body) {
+  static sendSms(body) {
     return axiosFetch ('sendSms', {
       method: 'POST',
       body : JSON.stringify(body)
