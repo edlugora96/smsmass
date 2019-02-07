@@ -7,7 +7,7 @@ const handlerSms = require('./controllers/handlerSmsObj');
 const app = express();
 let handlerSmsClass = new handlerSms;
 handlerSmsClass.setData()
-//API Dispatch
+// API Dispatch
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
