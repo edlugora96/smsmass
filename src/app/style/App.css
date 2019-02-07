@@ -1,3 +1,13 @@
+/* Normalize */
+textarea {
+  color: inherit; /* 1 */
+  font: inherit; /* 2 */
+  margin: 0; /* 3 */
+}
+textarea {
+  overflow: auto;
+}
+/* Normalize */
 label {
   cursor: pointer;
 }
@@ -44,7 +54,7 @@ label {
 }
 .App-header-form p {
   text-align: right;
-  font-size: 0.7rem;
+  /*font-size: 0.7rem;*/
 }
 .App-header-add{
   font-size: 0.6rem;
@@ -68,6 +78,15 @@ label {
 }
 .App-header-textarea{
   border-top-left-radius: 0 !important;
+  width: 100%;
+  outline: 0;
+  padding: 10px;
+  border: none;
+  background-color: $white;
+  border-left: 1px solid #DEE2E2;
+  resize: none;
+  color: #777;
+  max-height: 20rem;
 }
 .App-header-plus-svg {
   fill:#b23850;

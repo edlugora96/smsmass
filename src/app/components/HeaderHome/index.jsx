@@ -19,9 +19,7 @@ class headerHome extends Component {
             <h1> Welcome to SMS Bult </h1>
             <h6>Send a massive SMS for your marketing campaign.</h6>
             <img src={logo} className="App-logo" alt="logo" />
-            <a className="App-link" href="/" >
-              <i>Drop CSV file with contact list.</i>
-            </a>
+            <i className="App-link" >Drop CSV file with contact list.</i>
           </label>
           <input onDrop={this.props.onFileLoad.bind(this)} onChange={this.props.onFileLoad.bind(this)} style={{"display":"none"}} id="excel" type="file" />
         </div>

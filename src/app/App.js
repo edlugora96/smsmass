@@ -10,6 +10,7 @@ import store from './redux/store.js';
 import TableOfContacts from './components/TableOfContacts';
 
 import './style/App.css';
+import './style/reactTable.css';
 
 class App extends Component {
   constructor(props) {
@@ -20,31 +21,59 @@ class App extends Component {
     };
     this.onFileLoad = this.onFileLoad.bind(this);
     this.putState = this.putState.bind(this);
+    this.parseFromCsvToArrayJson = this.parseFromCsvToArrayJson.bind(this);
   }
 
+  parseFromCsvToArrayJson(csv) {
+    let contacts = csv.split('\n'),
+        headerMatriz = contacts[0].split(','),
+        dateContacts = [],
+        handlerDataHead = [],
+        finalDataTable = [];
+    for (let i = 0; i < contacts.length; i++) {
+      let rowContacts = contacts[i].split(',');
+      if (i!=0) {
+        dateContacts[i-1] = {}
+      }
+
+      for (let j = 0; j < rowContacts.length; j++) {
+        if (i===0) {
+          handlerDataHead[j]= 
+          {
+            Header : rowContacts[j],
+            accessor : rowContacts[j]
+          }
+        } 
+        else 
+        {
+          let head = String(headerMatriz[j]);
+          dateContacts[i-1][head] = rowContacts[j]
+        }
+      }
+    }
+    finalDataTable[0] = handlerDataHead;
+    finalDataTable[1] = dateContacts;
+    this.props.saveTable(finalDataTable);
+    this.props.history.push('/tableOfContacts');
+    return finalDataTable;
+  }
   
   onFileLoad(e){
     e.preventDefault();
     e.stopPropagation();
 
     if (e.dataTransfer) {
-      var handlerContacts = new handlerContactsObj(e.dataTransfer.files[0])
+      let handlerContacts = new handlerContactsObj(e.dataTransfer.files[0])
       handlerContacts.readCsvFile().then((response) => {
-        this.props.saveTable(response);
-        this.props.history.push('/tableOfContacts');
-        window.localStorage.setItem('saveTable', response);
+        this.parseFromCsvToArrayJson(response);
       }).catch((response) => {
-        console.error(response)
       })
     }
     else{
-      var handlerContactsOth = new handlerContactsObj(e.target.files[0])
+      let handlerContactsOth = new handlerContactsObj(e.target.files[0])
       handlerContactsOth.readCsvFile().then((response) => {
-        this.props.saveTable(response)
-        this.props.history.push('/tableOfContacts');
-        window.localStorage.setItem('saveTable', response);
+        this.parseFromCsvToArrayJson(response);
       }).catch((response) => {
-        console.error(response)
       })
     }
   }
@@ -59,7 +88,7 @@ class App extends Component {
       path
     } = this.props.match;
     return (
-      <div className="App row">
+      <div className="App row actualizate">
       {
         path==='/tableOfContacts' ?
         <TableOfContacts saveTableReducer={this.props.saveTableReducer}/>
