@@ -39,7 +39,7 @@ export function apiOptions(options = {}) {
 }
 
 
-export function axiosFetch (endpoint, options = {}, query = false) {
+export function apiFetch (endpoint, options = {}, query = false) {
   let qs;
   const { fetchingFrom = 'client' } = options;
   delete options.fetchFrom;
@@ -56,7 +56,7 @@ export function axiosFetch (endpoint, options = {}, query = false) {
 
 class fetchServer {
   static sendSms(body) {
-    return axiosFetch ('sendSms', {
+    return apiFetch ('sendSms', {
       method: 'POST',
       body : JSON.stringify(body)
     })

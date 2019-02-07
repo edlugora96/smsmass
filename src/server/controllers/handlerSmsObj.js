@@ -1,5 +1,11 @@
 const SerialPort = require ( 'serialport' );
-const portConst = new SerialPort("COM8", {
+const utf8 = require('utf8');
+const serialportgsm = require('serialport-gsm')
+const modem = serialportgsm.Modem()
+const pdu = require('./pdu')
+let EventEmitter = require('events').EventEmitter
+console.log(modem)
+/*const portConst = new SerialPort("COM8", {
      baudRate: 9600,  
      dataBits: 8,  
      parity: 'none',  
@@ -10,12 +16,12 @@ const portConst = new SerialPort("COM8", {
      xoff:false, 
      xany:false, 
      buffersize:0
-});
+});*/
 class handlerSms 
 {
   constructor(mg, ph) 
   {
-    this.port = portConst;
+    // this.port = portConst;
     this.phone = ph;
     this.message = mg;
     this.response;
@@ -33,25 +39,107 @@ class handlerSms
     } )  
   }
 
-  send()
+  send(alert)
   {
+    let message = utf8.decode(String(this.message)),
+        number = utf8.decode(String(this.phone))
+    modem.makeId = function (numOfCharacters) {
+      let text = ''
+      let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      for (let i = 0; i < numOfCharacters; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+      return text
+    }
+
     if (this.phone!= '' && this.message!= '') 
     {
-      this.port.write("AT+CMGF=1" );
+      // try {
+        let messageID = modem.makeId(25)
+        let pduMessage = pdu.generate({
+          text: message,
+          receiver: number,
+          encoding: '16bit',
+          alert: alert || false
+        })
+        for (let i = 0; i < pduMessage.length; i++) {
+          modem.executeCommand(`AT+CMGS=${number}`, function (data) { console.log(data) }, false, 100)
+          modem.executeCommand(`${message}` + '\x1a', function (data) {
+            console.log(data)
+            let channel = ''
+            if (data.status == 'fail') {
+              channel = 'onMessageSendingFailed'
+            } else {
+              channel = 'onMessageSent'
+            }
+
+            let result = {
+              status: data.status,
+              request: data.request,
+              data: {
+                messageId: data.data.messageId,
+                message: data.data.message,
+                recipient: data.data.recipient,
+                response: data.data.response
+              }
+            }
+            if (i == pduMessage.length - 1) {
+              modem.emit(channel, result)
+              return (result)
+            }
+          }, false, 30000, messageID, message, number)
+        }
+        /*return ({
+          status: 'success',
+          request: 'sendSMS',
+          data: {
+            messageId: messageID,
+            response: 'Successfully Sent to Message Queue'
+          }
+        })*/
+
+      // } catch (error) {
+      //   return ({
+      //     status: 'Error',
+      //     request: 'sendSMS',
+      //     error: error
+      //   })
+      // }
+      // modem.sendSMS(phone, message, true,e=>console.log(e))
+      /*this.port.write("AT+CMGF=1" );
+      this.port.write('\r' );
+      this.port.write("AT+CSCA=+584260001100" );
       this.port.write('\r' );
       this.port.write("AT+CMGS=\"");
-      this.port.write(this.phone);
+      this.port.write(phone);
       this.port.write('"')
       this.port.write('\r');
-      this.port.write(this.message); 
+      this.port.write(message); 
       this.port.write(Buffer([0x1A]));
-      this.port.write('^z');
+      this.port.write('^z');*/
     }
   }
 
   setData()
   {
-    var promiseGetData = new Promise( (resolve, reject) => { 
+    let options = {
+        baudRate: 9600,
+        dataBits: 8,
+        parity: 'none',
+        stopBits: 1,
+        flowControl: false,
+        xon: false,
+        rtscts: false,
+        xoff: false,
+        xany: false,
+        buffersize: 0
+    }
+    modem.open('COM8', options,(e,a)=>console.log(e,a))
+    modem.on('open', data => {
+        modem.initializeModem()
+        modem.setModemMode(e=>console.log(e), 'PDU') 
+    })
+    /*var promiseGetData = new Promise( (resolve, reject) => { 
+      
       this.port.on( 'data' , function(chunk) {
           var buffer = '';
           var answers = '';
@@ -69,7 +157,7 @@ class handlerSms
           }
         })
     })
-    return promiseGetData
+    return promiseGetData*/
   }
 }
 
