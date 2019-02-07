@@ -4,11 +4,12 @@ function sendSms (req, res)
   const handlerSmsMass = new handlerSmsObj (req.body.message, req.body.phone);
     if (req.body.message.length<=160) {
       handlerSmsMass.send()
-      handlerSmsMass.setData().then((response) => {
+      /*handlerSmsMass.setData().then((response) => {
         res.status(200).send(response[3])
       }).catch( (response) => {
         res.status(409).send(response[1])
-      })
+      })*/
+      res.status(200).send('ok')
     }
 }
 

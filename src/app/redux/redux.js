@@ -20,27 +20,31 @@ export const sendSMSserverReducer = createReducer(
 {
   [sendSMSserver]: (state, action) => { 
     action.payload.then(res => {
-      console.log(res)
       state = res
       return [state, res]
 
     })
   },
   [massSendSMSserver]: (state, action) => { 
-    console.log(action)  
     let objMessagePrepar = [],
+        headClean = {},
+        messageTempAlter = [],
         messageTemp = action.payload.message
-    for (var i = 0; i < action.payload.contacts.length; i++) {
+        messageTemp= String(messageTemp).replace(/(<|>)/gim, ',');
+        messageTemp = messageTemp.split(',')
+    for (var i = 0; i < action.payload.headTableContacts.length; i++) {
+      let searchPoss = String(action.payload.headTableContacts[i].Header).replace(/(\"|\')/gmi, '')
+      headClean[searchPoss.replace(/(\"|\'|\r)/gmi, '')] = searchPoss
+    }
+    for (var i = 0; i < action.payload.contacts.length-1; i++) {
       objMessagePrepar[i] = {}
       objMessagePrepar[i].phone = action.payload.contacts[i].phone
-      for (var j = 0; j < action.payload.headTableContacts.length; j++) {
-        let re = new RegExp( '[<'+String(action.payload.headTableContacts[j].Header)+'>]' ,'gi')
-        messageTemp = String(messageTemp).replace(re, String(action.payload.contacts[i][action.payload.headTableContacts[j].Header])) 
-        objMessagePrepar[i].message = messageTemp;
-        console.log(re, action.payload.contacts[i][action.payload.headTableContacts[j].Header], messageTemp)
+      messageTempAlter[i] = []
+      for (var j = 0; j < messageTemp.length; j++) {
+        messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]]).replace(/(\"|\'|\r)/gmi, '')]||messageTemp[j]
+        if (j===messageTemp.length-1) { objMessagePrepar[i].message = messageTempAlter[i].join('')}
       }
     }
-    console.log(objMessagePrepar)
   }
 })
 export default {

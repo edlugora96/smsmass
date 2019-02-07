@@ -7,7 +7,6 @@ import store from '../../redux/store.js';
 class MuiVirtualizedTable extends React.PureComponent {
   render() {
     const data = this.props.saveTableReducer[1]
-   
     const columns = this.props.saveTableReducer[0]
     return <ReactTable
       data={data}

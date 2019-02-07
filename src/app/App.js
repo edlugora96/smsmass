@@ -40,14 +40,14 @@ class App extends Component {
         if (i===0) {
           handlerDataHead[j]= 
           {
-            Header : rowContacts[j],
-            accessor : rowContacts[j]
+            Header : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, ''),
+            accessor : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, '')
           }
         } 
         else 
         {
           let head = String(headerMatriz[j]);
-          dateContacts[i-1][head] = rowContacts[j]
+          dateContacts[i-1][head.replace(/(\"|\'|\r)/gmi, '')] =rowContacts[j].charAt(0)==4?'0'+rowContacts[j]:rowContacts[j]
         }
       }
     }

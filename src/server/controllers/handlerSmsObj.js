@@ -60,7 +60,7 @@ class handlerSms
           buffer = answers.pop();
           this.response = answers;
           answers[1] = new String(answers[1])
-          // console.log(answers)
+          console.log(answers)
           if (answers.length>2) {
             resolve(this.response)
           }

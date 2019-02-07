@@ -9,21 +9,31 @@ export default class ExpandingTextarea extends Component {
       click:false
     }
     this._handleChange = this._handleChange.bind(this)
+    this.typeInTextarea = this.typeInTextarea.bind(this)
   }
 
   componentDidMount() {
     this._adjustTextarea(this.el)
   }
-
+  typeInTextarea(el, newText) {
+    let start = el.selectionStart
+    let endWord = el.selectionEnd
+    let text = el.value
+    let before = text.substring(0, start)
+    let after  = text.substring(endWord, text.length)
+    el.value = (before + newText + after)
+    el.selectionStart = el.selectionEnd = start + newText.length
+    el.focus()
+  }
   componentWillReceiveProps(prevProps) {
     if (prevProps.maxLength !== this.props.maxLength) {
-      let contentTextArea = document.getElementById(this.props.id||"motepiedra").value;
+      let contentTextArea = this.el.value;
           contentTextArea = contentTextArea.substring(0, prevProps.maxLength)
-      document.getElementById(this.props.id||"motepiedra").value = contentTextArea;
+      this.el.value = contentTextArea;
       this._adjustTextarea(this.el)
     }
     if (prevProps.insert !== this.props.insert && prevProps.insert!=='') {
-      document.getElementById(this.props.id||"motepiedra").value += prevProps.insert
+      this.typeInTextarea(this.el,prevProps.insert)
       this._adjustTextarea(this.el, prevProps.insert)
       this.setState({click:false})
     }
