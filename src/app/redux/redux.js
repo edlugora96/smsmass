@@ -1,5 +1,7 @@
 import { createReducer, createAction } from 'redux-starter-kit'
+import utf8 from 'utf8';
 
+import fetchServer from '../shared/utils/fetchServer.js';
 // Table of contacs
 
 export const saveTable = createAction('table/savecontacts')
@@ -29,7 +31,8 @@ export const sendSMSserverReducer = createReducer(
     let objMessagePrepar = [],
         headClean = {},
         messageTempAlter = [],
-        messageTemp = action.payload.message
+        messageTemp = action.payload.message,
+        totalOfContacs, flagToSendSms;
         messageTemp= String(messageTemp).replace(/(<|>)/gim, ',');
         messageTemp = messageTemp.split(',')
     for (var i = 0; i < action.payload.headTableContacts.length; i++) {
@@ -42,9 +45,18 @@ export const sendSMSserverReducer = createReducer(
       messageTempAlter[i] = []
       for (var j = 0; j < messageTemp.length; j++) {
         messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]]).replace(/(\"|\'|\r)/gmi, '')]||messageTemp[j]
-        if (j===messageTemp.length-1) { objMessagePrepar[i].message = messageTempAlter[i].join('')}
+        if (j===messageTemp.length-1) { objMessagePrepar[i].message = utf8.encode(messageTempAlter[i].join(''))}
       }
     }
+    totalOfContacs = objMessagePrepar.length;
+    fetchServer.sendSms(objMessagePrepar[0])
+    flagToSendSms = 1;
+    let senderSms = setInterval( e=>
+      {
+        fetchServer.sendSms(objMessagePrepar[flagToSendSms])
+        flagToSendSms++
+        if (flagToSendSms===totalOfContacs) { clearInterval(senderSms)}
+      }, 3000)
   }
 })
 export default {

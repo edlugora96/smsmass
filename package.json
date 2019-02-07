@@ -22,7 +22,9 @@
     "react-virtualized": "^9.21.0",
     "redux": "^4.0.1",
     "redux-starter-kit": "^0.4.3",
-    "serialport": "^7.1.4"
+    "serial-at": "0.0.2",
+    "serialport": "^7.1.4",
+    "utf8": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
