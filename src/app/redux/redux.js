@@ -47,19 +47,18 @@ export const sendSMSserverReducer = createReducer(
         messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]]).replace(/(\"|\'|\r)/gmi, '')]||messageTemp[j]
         if (j===messageTemp.length-1) { objMessagePrepar[i].message = utf8.encode(messageTempAlter[i].join(''))}
       }
-      console.log(objMessagePrepar[i])
       // objMessagePrepar[i] = JSON.parse(objMessagePrepar[i]);
     }
     totalOfContacs = objMessagePrepar.length;
-    console.log(objMessagePrepar)
-    // fetchServer.sendSms(objMessagePrepar[0])
+    
+    fetchServer.sendSms(objMessagePrepar[0])
     flagToSendSms = 1;
     let senderSms = setInterval( e=>
       {
-        // fetchServer.sendSms(objMessagePrepar[flagToSendSms])
+        fetchServer.sendSms(objMessagePrepar[flagToSendSms])
         flagToSendSms++
         if (flagToSendSms===totalOfContacs) { clearInterval(senderSms)}
-      }, 3000)
+      }, 6000)
   }
 })
 export default {
