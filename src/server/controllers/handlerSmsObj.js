@@ -1,5 +1,6 @@
 const SerialPort = require ( 'serialport' );
-const portConst = new SerialPort("COM8", {
+const Port = require('serial-at')
+const portConst = new Port("COM8", {
      baudRate: 9600,  
      dataBits: 8,  
      parity: 'none',  
@@ -10,7 +11,8 @@ const portConst = new SerialPort("COM8", {
      xoff:false, 
      xany:false, 
      buffersize:0
-});
+})
+// const portConst = new SerialPort();
 class handlerSms 
 {
   constructor(mg, ph) 
@@ -37,37 +39,24 @@ class handlerSms
   {
     if (this.phone!= '' && this.message!= '') 
     {
-      this.port.write("AT+CMGF=1" );
-      this.port.write('\r' );
-      this.port.write("AT+CMGS=\"");
-      this.port.write(this.phone);
-      this.port.write('"')
-      this.port.write('\r');
-      this.port.write(this.message); 
-      this.port.write(Buffer([0x1A]));
-      this.port.write('^z');
+      this.port.at("AT+CMGF=1\rAT+CMGS=\""+this.phone+"\"\r"+this.message+Buffer([0x1A])+'^z').then(
+        e=>console.log('Message sended'+e)
+      )
+      // this.port.write('' );
+      // this.port.write("");
+      // this.port.write();
+      // this.port.write('"')
+      // this.port.write('');
+      // this.port.write(); 
+      // this.port.write();
+      // this.port.write();
     }
   }
 
   setData()
   {
     var promiseGetData = new Promise( (resolve, reject) => { 
-      this.port.on( 'data' , function(chunk) {
-          var buffer = '';
-          var answers = '';
-          buffer += chunk;
-          answers = buffer.split(/\r?\n/); 
-          buffer = answers.pop();
-          this.response = answers;
-          answers[1] = new String(answers[1])
-          console.log(answers)
-          if (answers.length>2) {
-            resolve(this.response)
-          }
-          else if (answers[1].search('ERROR')>-1) {
-            reject(this.response)
-          }
-        })
+      this.port.open().then(e=>console.log('Port are open sussces'+e))
     })
     return promiseGetData
   }
