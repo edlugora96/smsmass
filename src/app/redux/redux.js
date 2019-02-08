@@ -17,6 +17,7 @@ export const saveTableReducer = createReducer(
 export const sendSMSserver = createAction('serverSend/sendSMS')
 export const massSendSMSserver = createAction('serverSend/sendSMSmass')
 
+
 export const sendSMSserverReducer = createReducer(
 {},
 {
@@ -50,15 +51,42 @@ export const sendSMSserverReducer = createReducer(
       // objMessagePrepar[i] = JSON.parse(objMessagePrepar[i]);
     }
     totalOfContacs = objMessagePrepar.length;
-    
-    fetchServer.sendSms(objMessagePrepar[0])
-    flagToSendSms = 1;
-    let senderSms = setInterval( e=>
-      {
-        fetchServer.sendSms(objMessagePrepar[flagToSendSms])
-        flagToSendSms++
-        if (flagToSendSms===totalOfContacs) { clearInterval(senderSms)}
-      }, 6000)
+
+    // let senderSms = setInterval( e=>
+    let index = 0
+    function recallSend(index, arg, final){
+        return fetchServer.sendSms(arg[index])
+        .then
+        (
+          e=>{
+            if (index<final-1) {
+              recallSend(index+1, arg, final)
+            }
+            else
+            {
+              return {body : 'finalized the shipments', promise: e};
+            }
+            index++
+            return e
+          }
+        )
+        .catch
+        (
+          e=>{
+            if (index<final-1) {
+              recallSend(index+1, arg, final)
+            }
+            else
+            {
+              return {body : 'finalized the shipments', promise: e};
+            }
+            index++
+            return e
+          }
+        )
+        
+    }
+    recallSend(0,objMessagePrepar, totalOfContacs)
   }
 })
 export default {

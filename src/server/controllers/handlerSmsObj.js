@@ -39,24 +39,27 @@ class handlerSms
   {
     if (this.phone!= '' && this.message!= '') 
     {
-      this.port.at("AT+CMGF=1\rAT+CMGS=\""+this.phone+"\"\r"+this.message+Buffer([0x1A])+'^z').then(
-        e=>console.log('Message sended'+e)
+      return this.port.at("AT+CMGF=1\rAT+CMGS=\""+this.phone+"\"\r"+this.message+Buffer([0x1A])+'^z').then(
+        e=>{
+          if (String(e).indexOf('ERROR')!==-1) 
+            {
+              throw e
+            } 
+            else 
+              { 
+                return e 
+              }
+            }
+      ).catch(
+        e=> {throw new Error(e)}
       )
-      // this.port.write('' );
-      // this.port.write("");
-      // this.port.write();
-      // this.port.write('"')
-      // this.port.write('');
-      // this.port.write(); 
-      // this.port.write();
-      // this.port.write();
     }
   }
 
   setData()
   {
     var promiseGetData = new Promise( (resolve, reject) => { 
-      this.port.open().then(e=>console.log('Port are open sussces'+e))
+      this.port.open().then(e=>console.log('Port are open sussces')).catch(e=>console.log('Error to try open the port '+e))
     })
     return promiseGetData
   }
