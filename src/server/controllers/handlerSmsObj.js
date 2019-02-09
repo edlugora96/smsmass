@@ -40,8 +40,8 @@ class handlerSms
     if (this.phone!= '' && this.message!= '') 
     {
       let pduSMS = pdu.generate({
-        receiver:this.phone, //MSISDN
         text:this.message,
+        receiver:this.phone, //MSISDN
         encoding:'16bit' //Or 7bit if you're sending an ascii message.
       });
       // console.log(pduSMS)

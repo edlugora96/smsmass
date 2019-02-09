@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import React from 'react';
+/*import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -224,8 +224,8 @@ function ReactVirtualizedTable() {
   );
 }
 
-export default ReactVirtualizedTable;
-/*
+export default ReactVirtualizedTable;*/
+
 import React from 'react';
 import ReactTable from "react-table";
 import { connect } from 'react-redux';
@@ -244,4 +244,4 @@ class MuiVirtualizedTable extends React.PureComponent {
 const mapStateToProps = (state) => ({
     ...store.getState()
 })
-export default connect(mapStateToProps)(MuiVirtualizedTable);*/
+export default connect(mapStateToProps)(MuiVirtualizedTable);

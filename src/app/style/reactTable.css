@@ -9,6 +9,13 @@
   -ms-flex-direction:column;
   flex-direction:column;
   border:1px solid rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12);
+  border-radius: 4px;
+  background-color: #fff;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: #000;
+  width: 100%;
+  max-height: 400px;
 
 }
 .ReactTable *
@@ -50,6 +57,15 @@
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
+  height: 56px;
+  overflow: hidden;
+  padding-right: 17px;
+  line-height: 56px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 56px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
 
 }
 .ReactTable .rt-thead.-headerGroups
@@ -76,10 +92,6 @@
 {
   border-right:1px solid rgba(0,0,0,0.02)
 }
-.ReactTable .rt-thead.-header
-{
-  box-shadow:0 2px 15px 0 rgba(0,0,0,0.15)
-}
 .ReactTable .rt-thead .rt-tr
 {
   text-align:center
@@ -89,10 +101,11 @@
   padding:5px 5px;
   line-height:normal;
   position:relative;
-  border-right:1px solid rgba(0,0,0,0.05);
-  transition:box-shadow .3s cubic-bezier(.175,.885,.32,1.275);
   box-shadow:inset 0 0 0 0 transparent;
 
+}
+.ReactTable .rt-resizable-header-content, .ReactTable .rt-resizable-header -cursor-pointer{  
+  padding-top: calc((50px - 0.75rem)/2);
 }
 .ReactTable .rt-thead .rt-th.-sort-asc,.ReactTable .rt-thead .rt-td.-sort-asc
 {
@@ -175,20 +188,15 @@
 .ReactTable .rt-tbody .rt-tr-group
 {
   border-bottom:solid 1px rgba(0,0,0,0.05);
-
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  height: 56px;
 }
+.ReactTable .rt-tbody .rt-tr-group:hover {background-color: #eeeeee;}
 .ReactTable .rt-tbody .rt-tr-group:last-child
 {
   border-bottom:0
-}
-.ReactTable .rt-tbody .rt-td
-{
-  border-right:1px solid rgba(0,0,0,0.02);
-
-}
-.ReactTable .rt-tbody .rt-td:last-child
-{
-  border-right:0
 }
 .ReactTable .rt-tbody .rt-expandable
 {
@@ -233,6 +241,7 @@
   transition-property:width,min-width,padding,opacity;
 
 }
+.ReactTable .rt-td {padding-top: calc((50px - 0.75rem)/2);}
 .ReactTable .rt-th.-hidden,.ReactTable .rt-td.-hidden
 {
   width    :0 !important;
@@ -314,6 +323,11 @@
 {
   background:rgba(0,0,0,0.05)
 }
+.ReactTable .pagination-bottom{
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
 .ReactTable .-pagination
 {
   z-index          :1;
@@ -329,8 +343,6 @@
   -ms-flex-wrap    :wrap;
   flex-wrap        :wrap;
   padding          :3px;
-  box-shadow       :0 0 15px 0 rgba(0,0,0,0.1);
-  border-top       :2px solid rgba(0,0,0,0.1);
 
 }
 .ReactTable .-pagination input,.ReactTable .-pagination select

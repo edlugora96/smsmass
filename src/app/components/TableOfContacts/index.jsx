@@ -34,7 +34,7 @@ class headerHome extends Component {
     })
   }*/
   render() {
-    let body = window.localStorage.getItem('saveTable').split("\n");
+    //let body = window.localStorage.getItem('saveTable').split("\n");
 
     return (
       <header className="App-header col-8">
