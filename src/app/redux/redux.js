@@ -79,7 +79,6 @@ export const sendSMSserverReducer = createReducer(
             return e
           }
         )
-        
     }
     recallSend(0,objMessagePrepar, totalOfContacs)
   }

@@ -1,6 +1,6 @@
 requests.post('http://localhost:8080/api/sendSms',
   json= {"phone": "04267961962",
-   "message": "Epa chamo Chamba Juvenil te invita a la Gran Asamb…Y ESTUDIO.\nLugar: Comedor Popular Parroquia Simo"
+   "message": "el termino atomo proviene del griego (atomon), union de dos vocablos: α (a), que significa sin, y τομον (tomon), que significa division (indivisible, algo que no se puede dividir),1​ y fue el nombre que se dice les dio democrito de abdera, discipulo de leucipo de mileto, a las particulas que el concebia como las de menor tamano posible.2​ un atomo es la unidad constituyente mas pequena de la materia que tiene las propiedades de un elemento quimico.3​ cada solido, liquido, gas y plasma se compone de atomos neutros o ionizados. los atomos son muy pequenos; los tamanos tipicos son alrededor de 100 pm (diez mil millonesima parte de un metro).4​ no obstante, los atomos no tienen limites bien definidos y hay diferentes formas de definir su tamano que dan valores diferentes pero cercanos. los atomos son lo suficientemente pequenos para que la fisica clasica de resultados notablemente incorrectos. a traves del desarrollo de la fisica, los modelos atomicos han incorporado principios cuanticos para explicar y predecir mejor su comportamiento."
   }
   )
 
