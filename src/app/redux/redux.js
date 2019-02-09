@@ -1,7 +1,9 @@
 import { createReducer, createAction } from 'redux-starter-kit'
 import utf8 from 'utf8';
 
+
 import fetchServer from '../shared/utils/fetchServer.js';
+
 // Table of contacs
 
 export const saveTable = createAction('table/savecontacts')
@@ -12,15 +14,16 @@ export const saveTableReducer = createReducer(
   [saveTable]: (state, action) => state = action.payload
 })
 
+// send
+
 // sendSMSserver
 
 export const massSendSMSserver = createAction('serverSend/sendSMSmass')
 
-localStorage.setItem("END", true);
 export const sendSMSserverReducer = createReducer(
 {},
 {
-  [massSendSMSserver]: (state, action) => { 
+  [massSendSMSserver]: (state, action) => {
     let objMessagePrepar = [],
         headClean = {},
         messageTempAlter = [],
@@ -28,7 +31,6 @@ export const sendSMSserverReducer = createReducer(
         totalOfContacs, flagToSendSms;
         messageTemp= String(messageTemp).replace(/(<|>)/gim, ',');
         messageTemp = messageTemp.split(',')
-    localStorage.setItem("END",false)
     for (var i = 0; i < action.payload.headTableContacts.length; i++) {
       let searchPoss = String(action.payload.headTableContacts[i].Header).replace(/(\"|\')/gmi, '')
       headClean[searchPoss.replace(/(\"|\'|\r)/gmi, '')] = searchPoss
@@ -56,8 +58,8 @@ export const sendSMSserverReducer = createReducer(
             else
             {
               console.log('Fin')
-              localStorage.setItem("END",true);
-              return {body : 'finalized the shipments', promise: e};
+              state = {body : 'finalized the shipments', promise: e};
+              return state
             }
             index++
             return e
@@ -72,14 +74,13 @@ export const sendSMSserverReducer = createReducer(
             else
             {
               console.log('Fin')
-              localStorage.setItem("END",true);
-              return {body : 'finalized the shipments', promise: e};
+              state = {body : 'finalized the shipments', promise: e};
+              return state
             }
             index++
             return e
           }
         )
-        
     }
     recallSend(0,objMessagePrepar, totalOfContacs)
   }

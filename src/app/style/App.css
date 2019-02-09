@@ -114,6 +114,9 @@ label {
 .block {
   display: block !important;
 }
+.app-pacman-loading {
+  max-width:  6rem;
+}
 @keyframes App-logo-opacity {
   50% {
     opacity: 0.5;

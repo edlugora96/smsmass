@@ -58,8 +58,8 @@ class handlerSms
 
   setData()
   {
-    var promiseGetData = new Promise( (resolve, reject) => { 
-      // this.port.open().then(e=>console.log('Port are open sussces')).catch(e=>console.log('Error to try open the port '+e))
+    var promiseGetData = new Promise( (resolve, reject) => {
+      this.port.open().then(e=>console.log('Port are open sussces')).catch(e=>console.log('Error to try open the port '+e))
     })
     return promiseGetData
   }

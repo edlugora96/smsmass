@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import events from 'events';
 
 import Textarea from './ExpandingTextarea.jsx'
 import fetchServer from '../../shared/utils/fetchServer.js';
 import { saveTable, massSendSMSserver } from '../../redux/redux.js';
 import store from '../../redux/store.js';
 import pacman from '../../shared/img/pacman.svg';
+
+const emitter = new events.EventEmitter();
 
 class FormComponent extends Component {
   constructor(props) {
@@ -16,6 +19,7 @@ class FormComponent extends Component {
       variables:'',
       isertOnTextArea:'',
       classNAmeButtonItem:'',
+      sendStarted: false,
       textLong: true,
       textareaLong: 0
     };
@@ -23,6 +27,7 @@ class FormComponent extends Component {
     this.appendTextarea = this.appendTextarea.bind(this)
     this.prepareAllForSend = this.prepareAllForSend.bind(this)
     this.textareaLongChange = this.textareaLongChange.bind(this)
+    this.setSendStarted = this.setSendStarted.bind(this)
   }
   textareaLongChange(val){
     this.setState({
@@ -42,7 +47,7 @@ class FormComponent extends Component {
       this.setState({
         isertOnTextArea:''
       })
-    } 
+    }
     else
     {
       this.setState({
@@ -51,20 +56,26 @@ class FormComponent extends Component {
     }
     this.toggleDropdown()
   }
+  setSendStarted (val){
+    this.setState({
+      sendStarted:val
+    })
+  }
   prepareAllForSend(){
     let contacts = this.props.saveTableReducer[1],
         headTableContacts = this.props.saveTableReducer[0],
-        message = document.getElementById('app-header-textarea').value
-    let serverRes = this.props.massSendSMSserver({contacts, message, headTableContacts})
+        message = document.getElementById('app-header-textarea').value;
+    this.setSendStarted(true);
+    this.props.massSendSMSserver({contacts, message, headTableContacts})
   }
   componetWillReciveProps(nextProps){console.log(nextProps)}
   render() {
-    let { toggleDropdown, isertOnTextArea, textLong, textareaLong }= this.state,
+    let { toggleDropdown, isertOnTextArea, textLong, textareaLong, sendStarted }= this.state,
         { path }= this.props.match,
-        { saveTableReducer }= this.props;
+        { saveTableReducer, sendSMSserverReducer }= this.props;
     return (
       <form className="App-header-form col-4">
-            <h1>Type Your <br/>Massive Message</h1><br/>    
+            <h1>Type Your <br/>Massive Message</h1><br/>
         {
           path==='/tableOfContacts' ?
           <React.Fragment>
@@ -90,28 +101,28 @@ class FormComponent extends Component {
                   id="app-header-textarea"
                   className="form-control App-header-textarea"
                   name="post[notes]"
-                  placeholder="Write your message" 
+                  placeholder="Write your message"
                   insert={isertOnTextArea}
                   onChange={e=>{this.textareaLongChange(e.currentTarget.value.length)}}
               />
               <p id="charterCounter">You have written {textareaLong} of {textLong?1000:160} charter</p>
             </div>
             {
-              localStorage.getItem("END")?
-              <button 
+              !sendStarted?
+              <button
                 onClick={(e)=>
                   {
                     e.preventDefault();
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     this.prepareAllForSend()
-                  }} 
+                  }}
                 className="btn btn-primary">Start to Send
-              </button>  
-              : pacman
-            }  
+              </button>
+              : <img className="app-pacman-loading" src={pacman}/>
+            }
           </React.Fragment>
           :
-          <h5><i>"First drop your file"</i></h5> 
+          <h5><i>"First drop your file"</i></h5>
         }
       </form>
     );
