@@ -39,7 +39,7 @@ class handlerSms
   {
     if (this.phone!= '' && this.message!= '')
     {
-      return this.port.at("AT+CMGF=1\rAT+CMGS=\""+this.phone+"\""+this.message+'^z').then(
+      return this.port.at("AT+CMGF=1\rAT+CMGS=\""+this.phone+"\"\r"+this.message+Buffer([0x1A])+'^z').then(
         e=>{
           if (String(e).indexOf('ERROR')!==-1)
             {
