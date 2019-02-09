@@ -14,20 +14,12 @@ export const saveTableReducer = createReducer(
 
 // sendSMSserver
 
-export const sendSMSserver = createAction('serverSend/sendSMS')
 export const massSendSMSserver = createAction('serverSend/sendSMSmass')
 
-
+localStorage.setItem("END", true);
 export const sendSMSserverReducer = createReducer(
 {},
 {
-  [sendSMSserver]: (state, action) => { 
-    action.payload.then(res => {
-      state = res
-      return [state, res]
-
-    })
-  },
   [massSendSMSserver]: (state, action) => { 
     let objMessagePrepar = [],
         headClean = {},
@@ -36,6 +28,7 @@ export const sendSMSserverReducer = createReducer(
         totalOfContacs, flagToSendSms;
         messageTemp= String(messageTemp).replace(/(<|>)/gim, ',');
         messageTemp = messageTemp.split(',')
+    localStorage.setItem("END",false)
     for (var i = 0; i < action.payload.headTableContacts.length; i++) {
       let searchPoss = String(action.payload.headTableContacts[i].Header).replace(/(\"|\')/gmi, '')
       headClean[searchPoss.replace(/(\"|\'|\r)/gmi, '')] = searchPoss
@@ -48,11 +41,9 @@ export const sendSMSserverReducer = createReducer(
         messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]]).replace(/(\"|\'|\r)/gmi, '')]||messageTemp[j]
         if (j===messageTemp.length-1) { objMessagePrepar[i].message = utf8.encode(messageTempAlter[i].join(''))}
       }
-      // objMessagePrepar[i] = JSON.parse(objMessagePrepar[i]);
     }
     totalOfContacs = objMessagePrepar.length;
 
-    // let senderSms = setInterval( e=>
     let index = 0
     function recallSend(index, arg, final){
         return fetchServer.sendSms(arg[index])
@@ -64,6 +55,8 @@ export const sendSMSserverReducer = createReducer(
             }
             else
             {
+              console.log('Fin')
+              localStorage.setItem("END",true);
               return {body : 'finalized the shipments', promise: e};
             }
             index++
@@ -78,6 +71,8 @@ export const sendSMSserverReducer = createReducer(
             }
             else
             {
+              console.log('Fin')
+              localStorage.setItem("END",true);
               return {body : 'finalized the shipments', promise: e};
             }
             index++
