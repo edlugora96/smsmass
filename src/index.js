@@ -5,7 +5,7 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import './app/style/bootstrap-reboot.min.css';
 import './app/style/bootstrap.min.css';
 import './app/style/index.css';
-import App from './app/App';
+import App from './app/App.jsx';
 import store from './app/redux/store.js';
 import * as serviceWorker from './app/serviceWorker';
 import GuardRoute from './app/components/Wrapper/GuardRoute.jsx';

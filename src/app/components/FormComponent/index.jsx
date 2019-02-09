@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Textarea from './ExpandingTextarea'
+import Textarea from './ExpandingTextarea.jsx'
 import fetchServer from '../../shared/utils/fetchServer.js';
 import { saveTable, sendSMSserver, massSendSMSserver } from '../../redux/redux.js';
 import store from '../../redux/store.js';
