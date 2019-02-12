@@ -32,12 +32,12 @@ export const sendSMSserverReducer = createReducer(
         messageTemp= String(messageTemp).replace(/(<|>)/gim, ',');
         messageTemp = messageTemp.split(',')
     for (var i = 0; i < action.payload.headTableContacts.length; i++) {
-      let searchPoss = String(action.payload.headTableContacts[i].Header).replace(/(\"|\')/gmi, '')
+      let searchPoss = String(action.payload.headTableContacts[i].Header).replace(/(\"|\'|\r)/gmi, '')
       headClean[searchPoss.replace(/(\"|\'|\r)/gmi, '')] = searchPoss
     }
     for (var i = 0; i < action.payload.contacts.length-1; i++) {
       objMessagePrepar[i] = {}
-      objMessagePrepar[i].phone = action.payload.contacts[i].phone
+      objMessagePrepar[i].phone = action.payload.contacts[i].phone.replace(/(\"|\'|\r)/gmi, '')
       messageTempAlter[i] = []
       for (var j = 0; j < messageTemp.length; j++) {
         messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]]).replace(/(\"|\'|\r)/gmi, '')]||messageTemp[j]
@@ -48,7 +48,7 @@ export const sendSMSserverReducer = createReducer(
 
     let index = 0
     function recallSend(index, arg, final){
-        return fetchServer.sendSms(arg[index])
+        return fetchServer.sendSms(arg[index], 'server')
         .then
         (
           e=>{

@@ -9,9 +9,9 @@ import { saveTable  } from './redux/redux.js';
 import store from './redux/store.js';
 import TableOfContacts from './components/TableOfContacts';
 
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import './style/App.css';
-import './style/reactTable.css';
-
+import './style/bootstrap-table.css';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -28,26 +28,30 @@ class App extends Component {
     let contacts = csv.split('\n'),
         headerMatriz = contacts[0].split(','),
         dateContacts = [],
-        handlerDataHead = [],
+        handlerDataHead = [{
+          dataField: 'id',
+          text: 'ID'
+        }],
         finalDataTable = [];
-    for (let i = 0; i < contacts.length; i++) {
+    for (let i = 0; i < contacts.length-1; i++) {
       let rowContacts = contacts[i].split(',');
       if (i!=0) {
-        dateContacts[i-1] = {}
+        dateContacts[i] = {}
       }
 
       for (let j = 0; j < rowContacts.length; j++) {
         if (i===0) {
-          handlerDataHead[j]= 
+          handlerDataHead[j+1]=
           {
-            Header : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, ''),
-            accessor : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, '')
+            dataField : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, ''),
+            text : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, '')
           }
-        } 
-        else 
+        }
+        else
         {
           let head = String(headerMatriz[j]);
-          dateContacts[i-1][head.replace(/(\"|\'|\r)/gmi, '')] =rowContacts[j].charAt(0)==4?'0'+rowContacts[j]:rowContacts[j]
+          dateContacts[i]['id'] = i-1;
+          dateContacts[i][head.replace(/(\"|\'|\r)/gmi, '')] =rowContacts[j].charAt(0)==4?'0'+rowContacts[j]:rowContacts[j]
         }
       }
     }
@@ -57,7 +61,7 @@ class App extends Component {
     this.props.history.push('/tableOfContacts');
     return finalDataTable;
   }
-  
+
   onFileLoad(e){
     e.preventDefault();
     e.stopPropagation();

@@ -1,0 +1,53 @@
+.react-bootstrap-table {
+  overflow-y: auto;
+  max-height: 340px;
+  border-radius: 4px 4px 0 0;
+}
+.react-bootstrap-table + .react-bootstrap-table {
+  box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12);
+  border-radius: 0 0 4px 4px;
+}
+.react-bootstrap-table table
+{
+  border:1px solid rgba(0,0,0,0.1);
+  /* box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12); */
+  background-color: #fff;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: #000;
+  width: 100%;
+
+}
+
+.react-bootstrap-table thead
+{
+  height: 56px;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+
+}
+
+.react-bootstrap-table tbody {
+  height: 300px;
+  overflow-y: auto;
+}
+.react-bootstrap-table tbody tr
+{
+  border-bottom:solid 1px rgba(0,0,0,0.05);
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  height: 44px;
+}
+
+.react-bootstrap-table .uniqueTableHead {
+  margin: 0;
+}
+.react-bootstrap-table .uniqueTableBody thead {
+  display: none;
+}
+.react-bootstrap-table .uniqueTableBody {
+  margin: 0;
+}
