@@ -9,7 +9,7 @@ export function apiEndpoint(endpoint, qs, fetchingFrom) {
   }
 
   if (fetchingFrom === 'server') {
-    apiUrl = 'https://jkasduhawdawdgsefe.localtunnel.me';
+    apiUrl = 'https://eduardoluisgonzalezraveli26019830267537960414095117226321272.localtunnel.me';
   }
 
   return `${apiUrl}/api/${endpoint}${query}`;
