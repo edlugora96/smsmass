@@ -89,7 +89,7 @@ class FormComponent extends Component {
                   <div className={toggleDropdown?"dropdown-menu block":"dropdown-menu"}>
                     {
                       saveTableReducer[0].map((res, key)=>{
-                        return <a onClick={(e)=>{e.preventDefault();e.stopPropagation(); this.appendTextarea(e) }} key={key} className="dropdown-item" href="#">{res.Header}</a>
+                        return <a onClick={(e)=>{e.preventDefault();e.stopPropagation(); this.appendTextarea(e) }} key={key} className="dropdown-item" href="#">{res.dataField}</a>
                       })
                     }
                   </div>

@@ -1,6 +1,7 @@
 const handlerSmsObj = require ('./handlerSmsObj.js')
 function sendSms (req, res)
 {
+  console.log(req.body)
   const handlerSmsMass = new handlerSmsObj (String(req.body.message).replace(/(\"|\'|\r)/gmi, ''), String(req.body.phone).replace(/(\"|\'|\r)/gmi, ''));
   if (req.body.message.length<=160) {
     let sendResponse = handlerSmsMass.send()

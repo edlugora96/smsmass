@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import utf8 from 'utf8';
 
 import FormComponent from './components/FormComponent';
 import handlerContactsObj from './shared/utils/hlrCntcsObj.js';
@@ -12,12 +13,21 @@ import TableOfContacts from './components/TableOfContacts';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import './style/App.css';
 import './style/bootstrap-table.css';
+
+function eliminarDiacriticosEs(texto) {
+    return texto
+           .normalize('NFD')
+           .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1")
+           .normalize();
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state={
       tableOfContacts:'',
-      variables:''
+      variables:'',
+      statusError:true
     };
     this.onFileLoad = this.onFileLoad.bind(this);
     this.putState = this.putState.bind(this);
@@ -43,20 +53,25 @@ class App extends Component {
         if (i===0) {
           handlerDataHead[j+1]=
           {
-            dataField : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, ''),
-            text : String(rowContacts[j]).replace(/(\"|\'|\r)/gmi, '')
+            dataField :  utf8.encode(String(rowContacts[j]).replace(/(\"|\'|\r|\n)/gmi, '')),
+            text :  utf8.encode(String(rowContacts[j]).replace(/(\"|\'|\r|\n)/gmi, ''))
           }
         }
         else
         {
           let head = String(headerMatriz[j]);
-          dateContacts[i]['id'] = i-1;
-          dateContacts[i][head.replace(/(\"|\'|\r)/gmi, '')] =rowContacts[j].charAt(0)==4?'0'+rowContacts[j]:rowContacts[j]
+          dateContacts[i]['id'] = String(i-1).replace(/(\"|\'|\r|\n)/gmi, '');
+          dateContacts[i][utf8.encode(String(head.replace(/(\"|\'|\r|\n)/gmi, '')))]= rowContacts[j].charAt(0)==4
+            ?
+              utf8.encode(String('0'+rowContacts[j].replace(/(\"|\'|\r|\n)/gmi, '')))
+            :
+              utf8.encode(String(rowContacts[j].replace(/(\"|\'|\r|\n)/gmi, '')))
         }
       }
     }
     finalDataTable[0] = handlerDataHead;
     finalDataTable[1] = dateContacts;
+    finalDataTable[1].shift()
     this.props.saveTable(finalDataTable);
     this.props.history.push('/tableOfContacts');
     return finalDataTable;
@@ -69,16 +84,16 @@ class App extends Component {
     if (e.dataTransfer) {
       let handlerContacts = new handlerContactsObj(e.dataTransfer.files[0])
       handlerContacts.readCsvFile().then((response) => {
+        this.setState({statusError:false})
         this.parseFromCsvToArrayJson(response);
-      }).catch((response) => {
-      })
+      }).catch((response) => { this.setState({statusError:'Porfavro ingrese un archivo CSV (delimitado por comas) valido'})})
     }
     else{
       let handlerContactsOth = new handlerContactsObj(e.target.files[0])
       handlerContactsOth.readCsvFile().then((response) => {
+        this.setState({statusError:false})
         this.parseFromCsvToArrayJson(response);
-      }).catch((response) => {
-      })
+      }).catch((response) => { this.setState({statusError:'Porfavro ingrese un archivo CSV (delimitado por comas) valido'}) })
     }
   }
   putState(par) {

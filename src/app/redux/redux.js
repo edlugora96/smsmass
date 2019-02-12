@@ -1,5 +1,4 @@
 import { createReducer, createAction } from 'redux-starter-kit'
-import utf8 from 'utf8';
 
 
 import fetchServer from '../shared/utils/fetchServer.js';
@@ -32,16 +31,16 @@ export const sendSMSserverReducer = createReducer(
         messageTemp= String(messageTemp).replace(/(<|>)/gim, ',');
         messageTemp = messageTemp.split(',')
     for (var i = 0; i < action.payload.headTableContacts.length; i++) {
-      let searchPoss = String(action.payload.headTableContacts[i].Header).replace(/(\"|\'|\r)/gmi, '')
-      headClean[searchPoss.replace(/(\"|\'|\r)/gmi, '')] = searchPoss
+      let searchPoss = String(action.payload.headTableContacts[i].dataField)
+      headClean[searchPoss] = searchPoss
     }
-    for (var i = 0; i < action.payload.contacts.length-1; i++) {
+    for (var i = 0; i < action.payload.contacts.length; i++) {
       objMessagePrepar[i] = {}
-      objMessagePrepar[i].phone = action.payload.contacts[i].phone.replace(/(\"|\'|\r)/gmi, '')
+      objMessagePrepar[i].phone = action.payload.contacts[i].phone
       messageTempAlter[i] = []
       for (var j = 0; j < messageTemp.length; j++) {
-        messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]]).replace(/(\"|\'|\r)/gmi, '')]||messageTemp[j]
-        if (j===messageTemp.length-1) { objMessagePrepar[i].message = utf8.encode(messageTempAlter[i].join(''))}
+        messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]])]||messageTemp[j]
+        if (j===messageTemp.length-1) { objMessagePrepar[i].message =messageTempAlter[i].join('')}
       }
     }
     totalOfContacs = objMessagePrepar.length;
