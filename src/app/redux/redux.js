@@ -40,7 +40,7 @@ export const sendSMSserverReducer = createReducer(
       messageTempAlter[i] = []
       for (var j = 0; j < messageTemp.length; j++) {
         messageTempAlter[i][j] = action.payload.contacts[i][String(headClean[messageTemp[j]])]||messageTemp[j]
-        if (j===messageTemp.length-1) { objMessagePrepar[i].message =messageTempAlter[i].join('')}
+        if (j===messageTemp.length-1) { objMessagePrepar[i].message = String(messageTempAlter[i].join('')).replace('\n','')}
       }
     }
     totalOfContacs = objMessagePrepar.length;
