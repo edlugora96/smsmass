@@ -293,4 +293,4 @@ export default {
     ZW: "Zimbabwe",
     ZZ: "Unknown Region"
   }
-}
+};

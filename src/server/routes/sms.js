@@ -1,14 +1,17 @@
 //Dependecies
 const express = require('express');
-const bodyParser = require('body-parser');
 const timeout = require('connect-timeout');
 //Controllers
-const sms = require('../controllers/sms');
+const ctrlSms = require('../controllers/sms');
 
 //Express router
 const Router = express.Router();
 
+//Passport Config
+const {isAuth} = require('../passport/localAuth');
+// const {isAuthJWT} = require('../passport/JWTAuth');
+const {sendCtrl} = require('../controllers/sms');
 
-Router.post('/send', timeout('86400s'), sms.sendSms)
+Router.post('/send', timeout('86400s'), isAuth, sendCtrl, ctrlSms.sendSms);
 
 module.exports = Router;
