@@ -70,10 +70,10 @@ async function sendCtrl(req, res, next)
         const format     = 'hh:mm:ss';
         const time       = moment(Date.now(), format),
               beforeTime = moment('05:00:00', format),
-              afterTime  = moment('21:00:00', format);
+              afterTime  = moment('22:00:00', format);
         if (!time.isBetween(beforeTime, afterTime)) {
           res.status(400).send({
-            message: 'The service to send SMS start at 5:00 and end at 21:00 hour "GMT -4:30".'
+            message: `The service to send SMS start at ${beforeTime} and end at ${afterTime} hour "GMT -4:30".`
           });
         } else {
           if (smsCountStack < 9600) {
