@@ -1,0 +1,24 @@
+{
+  "files.exclude": {
+    "__error": "Not found",
+    ":\\Users\\maritza\\Desktop\\Nueva\\react-info-extract": true,
+    ":\\www\\edlugora\\.gitignore": true,
+    ":\\www\\edlugora\\.jshintrc": true,
+    ":\\www\\edlugora\\.vscode": true,
+    ":\\www\\edlugora\\build": true,
+    ":\\www\\edlugora\\config": true,
+    ":\\www\\edlugora\\htaccess": true,
+    ":\\www\\edlugora\\node_modules": true,
+    ":\\www\\edlugora\\package-lock.json": true,
+    ":\\www\\edlugora\\package.json": true,
+    ":\\www\\edlugora\\scripts": true,
+    ".gitignore": true,
+    ".jshintrc": true,
+    ".vscode": true,
+    "**/node_modules": true,
+    "**/public": true,
+    "**/src/server": true,
+    "package-lock.json": true,
+    "README.md": true
+  }
+}

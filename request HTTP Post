@@ -1,7 +1,0 @@
-requests.post('http://localhost:8080/api/sendSms',
-  json= {"phone": "04267961962",
-   "message": "https://chilly-penguin-27.localtunnel.me/api/sendSms"
-  }
-  )
-
-[       =  ]
