@@ -1,1 +1,0 @@
-"AT+CMGF=1\rAT+CMGS=\""+this.phone+"\"\r"+this.message+Buffer([0x1A])+"^z"

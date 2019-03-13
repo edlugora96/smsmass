@@ -1,0 +1,73 @@
+@import '~$styles/_functions.styl'
+@import '~$styles/_variables.styl'
+
+.logo
+  grid-area logo
+  display grid
+  grid-template-columns 1fr 4fr
+  grid-template-rows 3rem
+  align-items center
+  padding rem(11.2) rem(7)
+  &:after
+    background-color #66615b
+    opacity .4
+    content ''
+    position absolute
+    top rem(63)
+    right rem(15)
+    height rem(1)
+    width "calc(100% - %s)" % rem(30)
+  .simple-text.logo-mini
+    margin 0 rem(5) 0 rem(10)
+    padding 0 rem(8)
+    .logo-image-small
+        img
+          max-height rem(34)
+          border-radius 50%
+          border rem(1) solid #9a9a9a
+  .simple-text.logo-normal
+    color #66615b
+    font-size rem(20)
+.sidebar-wrapper
+  grid-area menuAside
+  display grid
+  margin-top rem(20)
+  grid-template-rows repeat( auto-fit, minmax(rem(25), rem(50)) )
+  .nav
+    list-style none
+    margin-bottom 0
+    width 100%
+    padding 0
+    li.active > a:before, li.active > a:after
+      border-right rem(17) solid #dddddd
+      border-top rem(17) solid transparent
+      border-bottom rem(17) solid transparent
+      content ""
+      display inline-block
+      position absolute
+      right rem(-16)
+      opacity 1
+      top 0.15rem
+      transition opacity 150ms ease-in
+    li.active > a:before
+      border-right rem(17) solid #f4f3ef
+      right rem(-18)
+      z-index 1
+    a
+      color #66615b
+      opacity 0.7
+      font-size rem(16)
+      line-height rem(30)
+      padding 0 rem(8) rem(10) rem(10)
+      margin rem(10) rem(15) 0 rem(15)
+      text-decoration none
+      position relative
+      text-transform uppercase
+      cursor pointer
+      display grid
+      grid-template-columns 1fr 5fr
+      grid-template-rows 100%
+      p
+        margin 0
+      i
+        transition all 300ms ease 0s

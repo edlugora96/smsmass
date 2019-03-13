@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../mongo/modelUser');
+const { saveSMS } = require('../controllers/sms');
 const {
   updateUser,
   getUser
@@ -20,7 +21,7 @@ const portConst = new Port('COM8', {
 });
 class handlerSms
 {
-  constructor(saveSMS)
+  constructor()
   {
     this.port       = portConst;
     this.saveSMS    = saveSMS;

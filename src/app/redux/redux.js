@@ -1,23 +1,20 @@
-import { createReducer, createAction } from 'redux-starter-kit'
+import { createReducer } from 'redux-starter-kit';
+import { saveTable } from './actions';
 
-
-import fetchServer from '../shared/utils/fetchServer.js';
+// import fetchServer from '../shared/utils/fetchServer.js';
 
 // Table of contacs
-
-export const saveTable = createAction('table/savecontacts')
-
-export const saveTableReducer = createReducer(
-  [],
+const dataTable = createReducer(
+  {},
 {
   [saveTable]: (state, action) => state = action.payload
-})
+});
 
 // send
 
 // sendSMSserver
 
-export const massSendSMSserver = createAction('serverSend/sendSMSmass')
+/* export const massSendSMSserver = createAction('serverSend/sendSMSmass')
 
 export const sendSMSserverReducer = createReducer(
 {},
@@ -82,9 +79,9 @@ export const sendSMSserverReducer = createReducer(
         )
     }
     recallSend(0,objMessagePrepar, totalOfContacs)
+    sendSMSserverReducer
   }
-})
+}) */
 export default {
-  saveTableReducer,
-  sendSMSserverReducer
+  dataTable,
 };

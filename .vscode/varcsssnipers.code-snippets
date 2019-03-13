@@ -1,0 +1,674 @@
+{
+	"$true1": {
+		"prefix": "$true1",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true1",
+		"description": "Color: #e6e9ed"
+	},
+	"$true2": {
+		"prefix": "$true2",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true2",
+		"description": "Color: #fff"
+	},
+	"$true3": {
+		"prefix": "$true3",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true3",
+		"description": "Color: rgba(0, 0, 0, 0.2)"
+	},
+	"$true4": {
+		"prefix": "$true4",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true4",
+		"description": "Color: #434a54"
+	},
+	"$true5": {
+		"prefix": "$true5",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true5",
+		"description": "Color: #aab2bd"
+	},
+	"$true6": {
+		"prefix": "$true6",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true6",
+		"description": "Color: #000"
+	},
+	"$true7": {
+		"prefix": "$true7",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true7",
+		"description": "Color: #7cd1ef"
+	},
+	"$true8": {
+		"prefix": "$true8",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true8",
+		"description": "Color: #4fc1e9"
+	},
+	"$true9": {
+		"prefix": "$true9",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true9",
+		"description": "Color: #ffdd87"
+	},
+	"$true10": {
+		"prefix": "$true10",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true10",
+		"description": "Color: #ffce54"
+	},
+	"$true11": {
+		"prefix": "$true11",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true11",
+		"description": "Color: #f2838f"
+	},
+	"$true12": {
+		"prefix": "$true12",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true12",
+		"description": "Color: #ed5565"
+	},
+	"$true13": {
+		"prefix": "$true13",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true13",
+		"description": "Color: #b9df90"
+	},
+	"$true14": {
+		"prefix": "$true14",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true14",
+		"description": "Color: #a0d468"
+	},
+	"$true15": {
+		"prefix": "$true15",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true15",
+		"description": "Color: #3bafda"
+	},
+	"$true16": {
+		"prefix": "$true16",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true16",
+		"description": "Color: #2494be"
+	},
+	"$true17": {
+		"prefix": "$true17",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true17",
+		"description": "Color: rgba(0, 0, 0, 0.125)"
+	},
+	"$true18": {
+		"prefix": "$true18",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true18",
+		"description": "Color: #96a0ad"
+	},
+	"$true19": {
+		"prefix": "$true19",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true19",
+		"description": "Color: #269ecb"
+	},
+	"$true20": {
+		"prefix": "$true20",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true20",
+		"description": "Color: #7ab03f"
+	},
+	"$true21": {
+		"prefix": "$true21",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true21",
+		"description": "Color: #efa50b"
+	},
+	"$true22": {
+		"prefix": "$true22",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true22",
+		"description": "Color: #d1293a"
+	},
+	"$true23": {
+		"prefix": "$true23",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true23",
+		"description": "Color: #2fa084"
+	},
+	"$true24": {
+		"prefix": "$true24",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true24",
+		"description": "Color: #ccd1d9"
+	},
+	"$true25": {
+		"prefix": "$true25",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true25",
+		"description": "Color: #37bc9b"
+	},
+	"$true26": {
+		"prefix": "$true26",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true26",
+		"description": "Color: #48cfad"
+	},
+	"$true27": {
+		"prefix": "$true27",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true27",
+		"description": "Color: #8cc152"
+	},
+	"$true28": {
+		"prefix": "$true28",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true28",
+		"description": "Color: #f6bb42"
+	},
+	"$true29": {
+		"prefix": "$true29",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true29",
+		"description": "Color: #da4453"
+	},
+	"$true30": {
+		"prefix": "$true30",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true30",
+		"description": "Color: #fd9883"
+	},
+	"$true31": {
+		"prefix": "$true31",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true31",
+		"description": "Color: #e9573f"
+	},
+	"$true32": {
+		"prefix": "$true32",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true32",
+		"description": "Color: #ee7f6d"
+	},
+	"$true33": {
+		"prefix": "$true33",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true33",
+		"description": "Color: #656d78"
+	},
+	"$true34": {
+		"prefix": "$true34",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true34",
+		"description": "Color: #ededed"
+	},
+	"$true35": {
+		"prefix": "$true35",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true35",
+		"description": "Color: #f4af20"
+	},
+	"$true36": {
+		"prefix": "$true36",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true36",
+		"description": "Color: #22b1e3"
+	},
+	"$true37": {
+		"prefix": "$true37",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true37",
+		"description": "Color: #126d8d"
+	},
+	"$true38": {
+		"prefix": "$true38",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true38",
+		"description": "Color: #87c940"
+	},
+	"$true39": {
+		"prefix": "$true39",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true39",
+		"description": "Color: #537f24"
+	},
+	"$true40": {
+		"prefix": "$true40",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true40",
+		"description": "Color: #ffbf21"
+	},
+	"$true41": {
+		"prefix": "$true41",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true41",
+		"description": "Color: #876000"
+	},
+	"$true42": {
+		"prefix": "$true42",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true42",
+		"description": "Color: #2fb593"
+	},
+	"$true43": {
+		"prefix": "$true43",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true43",
+		"description": "Color: #1a6451"
+	},
+	"$true44": {
+		"prefix": "$true44",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true44",
+		"description": "Color: #e8273b"
+	},
+	"$true45": {
+		"prefix": "$true45",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true45",
+		"description": "Color: #99101f"
+	},
+	"$true46": {
+		"prefix": "$true46",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true46",
+		"description": "Color: #26816a"
+	},
+	"$true47": {
+		"prefix": "$true47",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true47",
+		"description": "Color: #2e9c81"
+	},
+	"$true48": {
+		"prefix": "$true48",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true48",
+		"description": "Color: #2b957a"
+	},
+	"$true49": {
+		"prefix": "$true49",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true49",
+		"description": "Color: #333"
+	},
+	"$true50": {
+		"prefix": "$true50",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true50",
+		"description": "Color: #8c8c8c"
+	},
+	"$true51": {
+		"prefix": "$true51",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true51",
+		"description": "Color: #666"
+	},
+	"$true52": {
+		"prefix": "$true52",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true52",
+		"description": "Color: #1a1a1a"
+	},
+	"$true53": {
+		"prefix": "$true53",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true53",
+		"description": "Color: #bfbfbf"
+	},
+	"$true54": {
+		"prefix": "$true54",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true54",
+		"description": "Color: rgba(0, 0, 0, 0.6)"
+	},
+	"$true55": {
+		"prefix": "$true55",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true55",
+		"description": "Color: #d7f1fa"
+	},
+	"$true56": {
+		"prefix": "$true56",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true56",
+		"description": "Color: #aae1f4"
+	},
+	"$true57": {
+		"prefix": "$true57",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true57",
+		"description": "Color: #ebf6df"
+	},
+	"$true58": {
+		"prefix": "$true58",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true58",
+		"description": "Color: #d2ebb7"
+	},
+	"$true59": {
+		"prefix": "$true59",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true59",
+		"description": "Color: #fffaed"
+	},
+	"$true60": {
+		"prefix": "$true60",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true60",
+		"description": "Color: #ffebba"
+	},
+	"$true61": {
+		"prefix": "$true61",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true61",
+		"description": "Color: rgba(0, 0, 0, 0.175)"
+	},
+	"$true62": {
+		"prefix": "$true62",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true62",
+		"description": "Color: #f5f7fa"
+	},
+	"$true63": {
+		"prefix": "$true63",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true63",
+		"description": "Color: #b8bfc8"
+	},
+	"$true64": {
+		"prefix": "$true64",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true64",
+		"description": "Color: #c7ccd3"
+	},
+	"$true65": {
+		"prefix": "$true65",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$true65",
+		"description": "Color: #e7e9ec}"
+	},
+	"$rootblue": {
+		"prefix": "$rootblue",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootblue",
+		"description": "Color: blue #007bff"
+	},
+	"$rootindigo": {
+		"prefix": "$rootindigo",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootindigo",
+		"description": "Color: indigo #6610f2"
+	},
+	"$rootpurple": {
+		"prefix": "$rootpurple",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootpurple",
+		"description": "Color: purple #6f42c1"
+	},
+	"$rootpink": {
+		"prefix": "$rootpink",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootpink",
+		"description": "Color: pink #e83e8c"
+	},
+	"$rootred": {
+		"prefix": "$rootred",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootred",
+		"description": "Color: red #dc3545"
+	},
+	"$rootorange": {
+		"prefix": "$rootorange",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootorange",
+		"description": "Color: orange #fd7e14"
+	},
+	"$rootyellow": {
+		"prefix": "$rootyellow",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootyellow",
+		"description": "Color: yellow #ffc107"
+	},
+	"$rootgreen": {
+		"prefix": "$rootgreen",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootgreen",
+		"description": "Color: green #28a745"
+	},
+	"$rootteal": {
+		"prefix": "$rootteal",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootteal",
+		"description": "Color: teal #20c997"
+	},
+	"$rootcyan": {
+		"prefix": "$rootcyan",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootcyan",
+		"description": "Color: cyan #17a2b8"
+	},
+	"$rootwhite": {
+		"prefix": "$rootwhite",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootwhite",
+		"description": "Color: white #fff"
+	},
+	"$rootgray": {
+		"prefix": "$rootgray",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootgray",
+		"description": "Color: gray #6c757d"
+	},
+	"$rootgray-dark": {
+		"prefix": "$rootgray-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootgray-dark",
+		"description": "Color: gray-dark #343a40"
+	},
+	"$rootprimary": {
+		"prefix": "$rootprimary",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootprimary",
+		"description": "Color: primary #007bff"
+	},
+	"$rootsecondary": {
+		"prefix": "$rootsecondary",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootsecondary",
+		"description": "Color: secondary #6c757d"
+	},
+	"$rootsuccess": {
+		"prefix": "$rootsuccess",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootsuccess",
+		"description": "Color: success #28a745"
+	},
+	"$rootinfo": {
+		"prefix": "$rootinfo",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootinfo",
+		"description": "Color: info #17a2b8"
+	},
+	"$rootwarning": {
+		"prefix": "$rootwarning",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootwarning",
+		"description": "Color: warning #ffc107"
+	},
+	"$rootdanger": {
+		"prefix": "$rootdanger",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootdanger",
+		"description": "Color: danger #dc3545"
+	},
+	"$rootlight": {
+		"prefix": "$rootlight",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootlight",
+		"description": "Color: light #f8f9fa"
+	},
+	"$rootdark": {
+		"prefix": "$rootdark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$rootdark",
+		"description": "Color: dark #343a40"
+	},
+	"$white": {
+		"prefix": "$white",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$white",
+		"description": "Color: white #FFF"
+	},
+	"$black": {
+		"prefix": "$black",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$black",
+		"description": "Color: black #000"
+	},
+	"$bluejeans-dark": {
+		"prefix": "$bluejeans-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$bluejeans-dark",
+		"description": "Color: bluejeans-dark #4A89DC"
+	},
+	"$bluejeans-light": {
+		"prefix": "$bluejeans-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$bluejeans-light",
+		"description": "Color: bluejeans-light #5D9CEC"
+	},
+	"$aqua-dark": {
+		"prefix": "$aqua-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$aqua-dark",
+		"description": "Color: aqua-dark #3BAFDA"
+	},
+	"$aqua-light": {
+		"prefix": "$aqua-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$aqua-light",
+		"description": "Color: aqua-light #4FC1E9"
+	},
+	"$mint-dark": {
+		"prefix": "$mint-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$mint-dark",
+		"description": "Color: mint-dark #37BC9B"
+	},
+	"$mint-light": {
+		"prefix": "$mint-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$mint-light",
+		"description": "Color: mint-light #48CFAD"
+	},
+	"$grass-dark": {
+		"prefix": "$grass-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$grass-dark",
+		"description": "Color: grass-dark #8CC152"
+	},
+	"$grass-light": {
+		"prefix": "$grass-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$grass-light",
+		"description": "Color: grass-light #A0D468"
+	},
+	"$sunflower-dark": {
+		"prefix": "$sunflower-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$sunflower-dark",
+		"description": "Color: sunflower-dark #F6BB42"
+	},
+	"$sunflower-light": {
+		"prefix": "$sunflower-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$sunflower-light",
+		"description": "Color: sunflower-light #FFCE54"
+	},
+	"$bittersweet-dark": {
+		"prefix": "$bittersweet-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$bittersweet-dark",
+		"description": "Color: bittersweet-dark #E9573F"
+	},
+	"$bittersweet-light": {
+		"prefix": "$bittersweet-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$bittersweet-light",
+		"description": "Color: bittersweet-light #FC6E51"
+	},
+	"$grapefruit-dark": {
+		"prefix": "$grapefruit-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$grapefruit-dark",
+		"description": "Color: grapefruit-dark #DA4453"
+	},
+	"$grapefruit-light": {
+		"prefix": "$grapefruit-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$grapefruit-light",
+		"description": "Color: grapefruit-light #ED5565"
+	},
+	"$lavender-dark": {
+		"prefix": "$lavender-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$lavender-dark",
+		"description": "Color: lavender-dark #967ADC"
+	},
+	"$lavender-light": {
+		"prefix": "$lavender-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$lavender-light",
+		"description": "Color: lavender-light #AC92EC"
+	},
+	"$pinkrose-dark": {
+		"prefix": "$pinkrose-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$pinkrose-dark",
+		"description": "Color: pinkrose-dark #D770AD"
+	},
+	"$pinkrose-light": {
+		"prefix": "$pinkrose-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$pinkrose-light",
+		"description": "Color: pinkrose-light #EC87C0"
+	},
+	"$lightgray-dark": {
+		"prefix": "$lightgray-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$lightgray-dark",
+		"description": "Color: lightgray-dark #E6E9ED"
+	},
+	"$lightgray-light": {
+		"prefix": "$lightgray-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$lightgray-light",
+		"description": "Color: lightgray-light #F5F7FA"
+	},
+	"$mediumgray-dark": {
+		"prefix": "$mediumgray-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$mediumgray-dark",
+		"description": "Color: mediumgray-dark #AAB2BD"
+	},
+	"$mediumgray-light": {
+		"prefix": "$mediumgray-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$mediumgray-light",
+		"description": "Color: mediumgray-light #CCD1D9"
+	},
+	"$darkgray-dark": {
+		"prefix": "$darkgray-dark",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$darkgray-dark",
+		"description": "Color: darkgray-dark #434A54"
+	},
+	"$darkgray-light": {
+		"prefix": "$darkgray-light",
+		"scope": "stylus,css,scss,sass,less",
+		"body": "$darkgray-light",
+		"description": "Color: darkgray-light #656D78"
+	}
+}

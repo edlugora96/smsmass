@@ -2,7 +2,7 @@
 const express = require('express');
 const timeout = require('connect-timeout');
 //Controllers
-const ctrlSms = require('../controllers/sms');
+const { sendSms } = require('../middleware/sms');
 
 //Express router
 const Router = express.Router();
@@ -10,8 +10,8 @@ const Router = express.Router();
 //Passport Config
 const {isAuth} = require('../passport/localAuth');
 // const {isAuthJWT} = require('../passport/JWTAuth');
-const {sendCtrl} = require('../controllers/sms');
+const {sendCtrl} = require('../middleware/sms');
 
-Router.post('/send', timeout('86400s'), isAuth, sendCtrl, ctrlSms.sendSms);
+Router.post('/send', timeout('86400s'), isAuth, sendCtrl, sendSms);
 
 module.exports = Router;

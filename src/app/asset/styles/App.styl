@@ -1,0 +1,103 @@
+@import '~$styles/_functions.styl'
+@import '~$styles/_variables.styl'
+
+styleHerderFoote=
+  display flex
+  align-items center
+  justify-content space-between
+  padding 0 rem(16)
+  background-color #f4f3ef
+
+#root
+    display grid
+    grid-template-columns 1fr
+    grid-template-rows 1fr 1fr 1fr
+    grid-template-areas 'header'\
+                        'main'\
+                        'footer'
+    height 100vh
+  .headerLayout, .footer
+    {styleHerderFoote}
+  .headerLayout
+    grid-area header
+    display grid
+    grid-template-columns 1fr 1fr
+    grid-template-rows minmax(rem(63) 1fr) 1fr
+    grid-template-areas 'brand btn'\
+                        'menu menu'
+    border-bottom rem(1) solid #dddddd
+    .header__search
+      margin-left 42px
+  .headerLayout
+    background-color white
+  .footer
+    grid-area footer
+    padding rem(24) 0
+  .sidenav
+    display grid
+    grid-template-columns 1fr
+    grid-template-rows minmax(rem(63), 1fr) 7fr
+    grid-template-areas "logo"\
+                        "menuAside"
+    grid-area sidenav
+    height 100vh
+    width rem(240)
+    position fixed
+    box-shadow 0 rem(2) rem(2) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08)
+    z-index 2
+    background-color white
+    transform translateX(rem(-245))
+    transition all .6s ease-in-out
+    a
+      vertical-align middle
+    &.active
+      transform: translateX(0)
+    .sidenav__close-icon
+      position: absolute
+      visibility: visible
+      top: 8px
+      right: 12px
+      cursor: pointer
+      font-size: 20px
+      color: #ddd
+    .sidenav__list
+      padding 0
+      margin-top rem(85)
+      list-style-type none
+    .sidenav__list-item
+      padding rem(20) rem(20) rem(20) rem(40)
+      color #ddd
+    .sidenav__list-itemhover
+      background-color rgba(255, 255, 255, 0.2)
+      cursor pointer
+  main.main-panel
+    grid-area main
+    background-color #f4f3ef
+    transition all .6s ease-in-out
+    // display grid
+    // grid-template-columns: repeat(auto-fit, minmax(rem(200), auto));
+    // grid-template-rows repeat(3, minmax(rem(142), auto))
+    // gap 1rem
+    // grid-auto-flow row dense
+    padding rem(30) rem(15) 0 rem(15)
+
+@media only screen and (min-width: 46.875em)
+  .sidenav
+    transform translateX(0)
+  .sidenav__close-icon
+    visibility hidden
+  .headerLayout
+      background-color #f4f3ef
+      grid-template-columns 7fr 3fr
+      grid-template-areas "brand menu" \
+      // grid-template-rows minmax(rem(63) 1fr)
+      // grid-template-areas 'brand search view alert config'
+  #root
+    grid-template-columns 240px 1fr
+    grid-template-areas "sidenav header" \
+                          "sidenav main" \
+                          "sidenav footer"
+@media screen and (min-width: 65.625em)
+  .main-cards
+      column-count 2
+

@@ -1,0 +1,113 @@
+@import '~$styles/_functions.styl'
+@import '~$styles/_variables.styl'
+
+.card
+  margin 0 rem(15) rem(20) rem(15)
+  border-radius rem(12)
+  box-shadow rgba(0, 0, 0, 0.3)
+  background-color true2
+  color #252422
+  position relative
+  border 0 none
+  transition transform 300ms cubic-bezier(0.34, 1.61, 0.7, 1), box-shadow 200ms ease
+  .card-header
+    padding rem(15) rem(15) 0
+    border 0
+    .card-title
+      margin-top rem(10)
+      margin-bottom .75rem
+      font-size 1.57em
+      line-height 1.4em
+      font-weight 400
+    .card-category
+      text-transform capitalize
+      font-weight 400
+      color #9A9A9A
+      font-size 1em
+    & + .card-body
+      padding rem(15) rem(15) rem(10) rem(15)
+      height rem(232)
+
+  .card-body
+    padding rem(15) rem(15) 0
+    display grid
+    grid-template-columns 1fr 7fr
+    .icon-big
+      padding-right rem(15)
+      padding-left rem(15)
+      font-size 3em
+      min-height rem(64)
+      .nc-globe::before
+        content "\ea2e"
+      .nc-money-coins:before
+        content "\ea3e"
+      .nc-vector:before
+        content "\ea61"
+      .nc-favourite-28:before
+        content "\ea2b"
+      .text-warning
+        color #fbc658
+      .text-success
+        color #6bd098
+      .text-danger
+        color #ef8157
+      .text-primary
+        color #51cbce
+
+    .numbers
+      min-height rem(72)
+      text-align end
+      display grid
+      padding-left rem(15)
+      grid-template-columns 1fr
+      grid-template-rows rem(23) rem(42)
+      .card-category
+        color #9A9A9A
+        font-size rem(16)
+        line-height 1.4em
+        text-transform capitalize
+        font-weight 400
+      .card-title
+        font-weight 400
+        line-height 1.5
+        color #252422
+        font-size 2em
+  .card-footer
+    padding rem(0) rem(15) rem(15)
+    color #9A9A9A
+    .stats
+      color #212529
+    i
+      margin-right rem(5)
+      position relative
+      top 0
+      color #66615B
+    i:before
+      content "\f021"
+    hr
+      margin-top rem(10)
+      margin-bottom rem(15)
+      border 0
+      border-top-color currentcolor
+      border-top-style none
+      border-top-width 0
+      border-top rem(1) solid rgba(0,0,0,.1)
+  &:nth-child(1)
+    grid-column 1 / -1
+    grid-row-start 2
+  &:last-child
+    grid-column auto / -1
+
+@media screen and (min-width:rem(1070)) and (max-width:rem(1299))
+  .card:nth-child(6)
+    grid-column 1 / span 2
+  .card:last-child
+    grid-column 3 / -1
+@media screen and (min-width:rem(1300))
+  .card:nth-child(1)
+    grid-row-start 1
+  .card:nth-child(6)
+    grid-column auto
+  .card:last-child
+    grid-column auto
+

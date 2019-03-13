@@ -1,0 +1,241 @@
+@import '~$styles/_functions.styl'
+@import '~$styles/_variables.styl'
+
+.navbar-wrapper
+  grid-area brand
+  display inline-flex
+  align-items center
+  .navbar-toggle
+    width rem(37)
+    height rem(27)
+    vertical-align middle
+    outline 0
+    cursor pointer
+    margin-right 0.75rem
+    &:hover .navbar-toggler-bar.bar2
+      width rem(22)
+  .navbar-brand
+    color #66615B
+    text-transform capitalize
+    padding-top 0.5rem
+    padding-bottom 0.5rem
+    line-height 1.625rem
+    font-size rem(20)
+    margin-right 0
+  & + button.navbar-toggler
+    grid-area btn
+    display grid
+    justify-content end
+.navbar-toggler
+  padding .25rem .75rem
+  font-size 1.25rem
+  line-height 1
+  background-color transparent
+  border rem(1) solid transparent
+  border-radius .25rem
+  cursor pointer
+  display flex
+  flex-direction column
+  align-items flex-end
+  .navbar-toggler-bar
+    display block
+    position relative
+    width rem(22)
+    height rem(1)
+    border-radius rem(1)
+    background #66615B
+    & + .navbar-toggler-bar
+        margin-top rem(7)
+    &.bar1
+      top 0
+      animation topbar-back 500ms 0s
+      animation-fill-mode forwards
+    &.bar2
+      width rem(17)
+      transition width .2s linear
+    &.bar3
+      bottom 0
+      animation bottombar-back 500ms 0s
+      animation-fill-mode forwards
+    &.bar,&.bar2,&.bar3
+      outline rem(1) solid transparent
+    &.navbar-kebab
+      width rem(3)
+      height rem(3)
+      border-radius 50%
+      & + .navbar-kebab
+        margin-top rem(3)
+#navigation
+  grid-area menu
+  position relative
+  width 100%
+  z-index 1029
+  .input-group
+    margin 0
+    margin-top rem(5)
+    position relative
+    display flex
+    flex-wrap wrap
+    align-items stretch
+    width 100%
+  .form-control
+    background-color rgba(222, 222, 222, 0.3)
+    display block
+    border medium none
+    padding rem(11) rem(11)
+    position relative
+    -ms-flex 1 1 auto
+    flex 1 1 auto
+    width 1%
+    margin-bottom 0
+    border-radius rem(4)
+    line-height normal
+    font-size rem(14)
+    transition color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out
+    box-shadow none
+    color #66615b
+.navbar-nav
+  display flex
+  flex-direction column
+  padding-left 0
+  margin-bottom 0
+  list-style none
+  .nav-item:not(:last-child)
+    margin rem(10) 0
+  a:not(.dropdown-item):not(.btn)
+    color #66615B
+  .nav-item
+    display flex
+    a.nav-link
+      width 100%
+      text-transform uppercase
+      font-size 0.7142em
+      padding 0.5rem 0.7rem
+      line-height 1.625rem
+      margin-right rem(3)
+      vertical-align middle
+      & > *
+        font-size rem(14)
+      & i.nc-icon
+        top rem(4)
+        font-size rem(16)
+        position relative
+        top rem(3)
+        text-align center
+        width rem(21)
+        opacity 0.5
+        display inline-block
+        font normal normal normal 14px/1 'nucleo-icons'
+        font-size inherit
+        speak none
+        text-transform none
+          & + p
+            margin-left 3px
+   p
+    display inline-block
+    margin 0
+    line-height 1.8em
+    font-size 1em
+    font-weight 400
+.dropdown
+  display: flex
+  flex-direction: column
+  .dropdown-toggle:after
+    display inline-block
+    width 0
+    height 0
+    margin-left .255em
+    vertical-align .255em
+    content ""
+    border-top .3em solid
+    border-right .3em solid transparent
+    border-bottom 0
+    border-left .3em solid transparent
+    transition all 150ms ease 0s
+    margin-left 0
+  .dropdown-menu
+    display none
+    width auto
+    margin 0 1rem
+    padding-left rem(10)
+    border 0 none
+    padding 0px
+    top 100%
+    min-width 10rem
+    font-size 1rem
+    text-align left
+    list-style none
+    // display flex
+    flex-direction column
+    padding rem(10)
+    color #212529
+    & > *
+      color #212529
+  .dropdown-menu-right
+    right rem(-2)
+    left auto
+  .dropdown-item
+    display block
+    width 100%
+    padding rem(10) rem(45) rem(10)  rem(15)
+    clear both
+    font-weight 400
+    text-align inherit
+    white-space nowrap
+    background-color transparent
+    border 0
+    color #66615b
+    &:first-child
+      border-radius rem(12) rem(12) 0 0
+    &:last-child
+      border-radius 0 0 rem(12) rem(12)
+    &:hover
+      background-color #66615b
+      color #FFFFFF
+
+@media only screen and (min-width: 46.875em)
+  .navbar-wrapper + button.navbar-toggler,
+  .navbar-nav .nav-link p
+    display none !important
+  .dropdown-menu
+    background-color #FFFFFF
+    border 0 none
+    border-radius 12px
+    margin-top 10px
+    padding 0 !important
+    position absolute
+    box-shadow 1px 2px 7px 1px rgba(0, 0, 0, 0.125)
+    &:after
+        border-bottom 11px solid #FFFFFF
+        border-left 11px solid transparent
+        border-right 11px solid transparent
+        content ""
+        display inline-block
+        position absolute
+        right 12px
+        top -11px
+
+    &:before
+        border-bottom 11px solid #F1EAE0
+        border-left 11px solid transparent
+        border-right 11px solid transparent
+        content ""
+        display inline-block
+        position absolute
+        right 12px
+        top -12px
+
+  #navigation
+    align-items center
+    ul.navbar-nav
+      align-items center
+      display grid
+      grid-template-rows rem(63)
+      grid-template-columns repeat(3, minmax(rem(54), 1fr))
+
+
+
+
+
+
+

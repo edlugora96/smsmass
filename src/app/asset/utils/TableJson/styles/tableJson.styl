@@ -1,0 +1,27 @@
+@import '~$styles/_functions.styl'
+@import '~$styles/_variables.styl'
+gridRoot = var(--tableColsContact)
+gridRootRow = var(--tableRowsContact)
+
+.table
+  max-height 20rem
+  overflow auto
+  .gridTablle
+    grid-column 1 / -1
+    justify-content center
+    align-content center
+    display grid
+    grid-template-columns repeat(gridRoot, minmax(rem(100), auto))
+    grid-template-rows repeat(gridRootRow, 1fr)
+    & > div
+      display grid
+      justify-content  center
+      align-content  center
+      overflow-x hidden
+      padding rem(10)
+      background $white
+    .td
+      border-bottom rem(1) solid $mediumgray-light
+    .th
+      font-weight bold
+      border-bottom rem(1) solid $mediumgray-light
