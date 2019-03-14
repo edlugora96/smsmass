@@ -15,13 +15,11 @@
     ".gitignore": true,
     ".jshintrc": true,
     ".vscode": true,
-    "**/config": true,
     "**/node_modules": true,
     "**/public": true,
     "**/scripts": true,
     "**/src\\app\\App.test.js": true,
     "**/src\\app\\serviceWorker.js": true,
-    "package-lock.json": true,
     "README.md": true
   }
 }

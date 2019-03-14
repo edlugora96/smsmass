@@ -19,10 +19,12 @@ function passportIni (passport) {
     async (req, email, password, done) =>{
       try {
         const userFound = await User.findOne({'email': email});
+        // const comparatePass = await User.comparePassword({ 'email': email }, password);
+        // console.log(comparatePass, req);
         if(!userFound){
           return done(null, false, {message:`${email} User not found.`});
         }
-        else if (!User.comparePassword({email:email},password))
+        else if (false)
         {
           return done(null, false, {message: 'Error to Sign in.'});
         }

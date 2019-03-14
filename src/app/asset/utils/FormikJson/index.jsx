@@ -14,7 +14,6 @@ const optFormik = {
 
   handleSubmit(values, formikBag) {
     formikBag.setSubmitting(false);
-    console.log(formikBag.props);
     if (formikBag.props.template.onSubmit) {
       formikBag.props.template.onSubmit(values, formikBag);
     }

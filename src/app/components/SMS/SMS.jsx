@@ -7,7 +7,6 @@ import store from '$redux/store.js';
 import ReadCsvFile from '$utils/loadMessage.js';
 import FormikJson from '$utils/FormikJson';
 import TableJson from '$utils/TableJson';
-import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import formTemplate from './formTemplate';
 import './styles/sms.styl';
 
@@ -96,9 +95,7 @@ class SMS extends Component {
     const { dataTable } = this.props;
     if(loading){
       return pug`
-        h1 Cargando
-
-        ThreeSixtyIcon
+        h1 Cargando...
       `;
     }
     else if (next){

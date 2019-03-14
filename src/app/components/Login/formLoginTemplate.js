@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { fetchServer } from '$utils/fetchServer';
-import { setCookie } from '$utils/cookies';
+// import socket from '$app/socketsClient';
 
 export default {
   login:
@@ -28,8 +28,8 @@ export default {
         type: 'checkbox',
         title: 'Mantener session abierta',
         attr: {
-          name: 'remamber',
-          id: 'remamber'
+          name: 'remember',
+          id: 'remember'
         }
       },
       {
@@ -43,19 +43,25 @@ export default {
     initianState: () => ({
       email: '',
       password: '',
-      remamber: false
+      remember: false
     }),
-    onSubmit: async (values) => {
-      console.log(values);
-      const res = await fetchServer('users/signIn', values, 'server');
-      res.status === 200 && setCookie('auth', res.body.token, values.remamber?7:1);
-    },
     validSchema: Yup.object().shape({
       email: Yup.string()
         .required('Required')
         .email('Ingrese un Email valido'),
       password: Yup.string()
         .required('Required'),
-    })
+    }),
+    onSubmit: async (values, { props }) => {
+      const res = await fetchServer('users/signIn', values, 'server');
+      if (res.status === 200) {
+        props.saveLogin(res.body.token);
+        localStorage.setItem('auth', res.body.token);
+      } else {
+        localStorage.removeItem('auth');
+      }
+      // localStorage.getItem("auth");
+      // localStorage.removeItem("key");
+    },
   },
 };

@@ -279,13 +279,21 @@ module.exports = function(webpackEnv) {
         .map(ext => `.${ext}`)
         .filter(ext => useTypeScript || !ext.includes('ts')),
       alias: {
-        '$img': paths.appAssetImages,
-        '$styles': paths.appAssetStyles,
-        '$extcss': paths.appAssetStylesExternal,
-        '$utils': paths.appAssetUtils,
-        '$shared': paths.appAssetShared,
-        '$react': paths.appComponents,
-        '$redux': paths.appRedux,
+        '$img'        : paths.appAssetImages,
+        '$styles'     : paths.appAssetStyles,
+        '$extcss'     : paths.appAssetStylesExternal,
+        '$utils'      : paths.appAssetUtils,
+        '$shared'     : paths.appAssetShared,
+        '$react'      : paths.appComponents,
+        '$redux'      : paths.appRedux,
+        '$controllers': paths.serverControllers,
+        '$middleware' : paths.serverMiddleware,
+        '$mongo'      : paths.serverMongo,
+        '$passport'   : paths.serverPassport,
+        '$routes'     : paths.serverRoutes,
+        '$services'   : paths.serverServices,
+        '$app'   : paths.app,
+        '$server'   : paths.server,
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',

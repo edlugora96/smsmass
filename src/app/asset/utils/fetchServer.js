@@ -1,5 +1,4 @@
 import request from 'superagent';
-
 export const  apiEndpoint = (endpoint, qs, fetchingFrom) =>{
   let query = '';
   let apiUrl = '';
@@ -16,14 +15,34 @@ export const  apiEndpoint = (endpoint, qs, fetchingFrom) =>{
   return `${apiUrl}/${endpoint}${query}`;
 };
 
-export const fetchServer = (url, body, from, query) => {
+export const fetchServer = async (url, body, from, query) => {
   let endPoint = apiEndpoint(url, query, from);
-  return request.post(endPoint)
+  const res = await request.post(endPoint)
           .send(body)
-          .set('accept', 'json');
+          .set({
+            Accept       : 'application/json',
+            Authorization: localStorage.getItem('auth')
+          })
+          .then((data) => {
+            return data;
+          })
+          .catch((data) => {
+            return data;
+          });
+  return res;
 };
 
-export const fetchGetServer = (url, body, from, query) => {
+export const fetchGetServer = async (url, body, from, query) => {
   let endPoint = apiEndpoint(url, query, from);
-  return request.get(endPoint);
+  let res = await request.get(endPoint)
+                .set({
+                  Authorization: localStorage.getItem('auth')
+                })
+                .then((data) => {
+                  return data;
+                })
+                .catch((data) => {
+                  return data;
+                });
+  return res;
 };

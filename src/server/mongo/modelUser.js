@@ -38,14 +38,16 @@ const userSchema     = new Schema({
       }
     }]
   },
-  monthlySMS : { type: Number, default: 25 },
-  sentSMS    : { type: Number, default: 0 },
-  password   : { type: [String], select: false, required:true},
-  sex        : { type:String, enum: ['m','f','o'], required:true},
-  description: { type:String },
-  signupDate : { type: Date, default: Date.now() },
-  lastLogin  : Date,
-  social     : []
+  monthlySMS   : { type: Number, default: 25 },
+  sendSMS      : { type: Number, default: 0 },
+  activeOrder  : { type: [String], default: 0 },
+  notifications: { type: [String] },
+  password     : { type: [String], select: false, required:true},
+  sex          : { type:String, enum: ['m','f','o'], required:true},
+  description  : { type:String },
+  signupDate   : { type: Date, default: Date.now() },
+  lastLogin    : Date,
+  social       : []
 });
 
 function validateCorrectData(type, objToValidate) {

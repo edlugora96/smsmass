@@ -1,5 +1,7 @@
-const mongoose = require('mongoose');
-const User = require('../mongo/modelUser');
+const events      = require('events');
+const util        = require('util');
+const mongoose    = require('mongoose');
+const User        = require('../mongo/modelUser');
 const { saveSMS } = require('../controllers/sms');
 const {
   updateUser,
@@ -19,17 +21,16 @@ const portConst = new Port('COM8', {
      xany       : false,
      buffersize : 0
 });
-class handlerSms
-{
-  constructor()
-  {
-    this.port       = portConst;
-    this.saveSMS    = saveSMS;
-    this.updateUser = updateUser;
-    this.getUser    = getUser;
-    this.user       = User;
-  }
-  async digestedData(mwod, cwod, user, req, res) {
+function HandlerSms(){
+  events.EventEmitter.call(this);
+  const self = this;
+  this.port       = portConst;
+  this.saveSMS    = saveSMS;
+  this.updateUser = updateUser;
+  this.getUser    = getUser;
+  this.user       = User;
+
+  this.digestedData= async function(mwod, cwod, user, req, res) {
     if(mwod===undefined||cwod===undefined){
       throw new Error('The data to be sent can not be blank');
     }
@@ -40,7 +41,7 @@ class handlerSms
         messageTemp        = [],
         nrMessage          = 1,
         i                  = 0,
-        restToSendSMS      = userSearch.monthlySMS - userSearch.sentSMS,
+        restToSendSMS      = userSearch.monthlySMS - userSearch.sendSMS,
         messageWtOutDigest = String(mwod).replace(/(<|>)/gim, ',');
         messageWtOutDigest = messageWtOutDigest.split(',');
     if(restToSendSMS<1){
@@ -53,7 +54,7 @@ class handlerSms
         dataDigest[i]         = {};
         dataDigest[i].phone   = contact.phone;
         dataDigest[i].userId  = user._id;
-        dataDigest[i].sentSMS = user.sentSMS;
+        dataDigest[i].sendSMS = user.sendSMS;
         messageTemp[i]         = [];
         let         j          = 0;
         for (let partMessage of messageWtOutDigest) {
@@ -79,13 +80,14 @@ class handlerSms
       }
       return dataDigest;
     }
-  }
-  async send(req)
+  };
+  this.send =async function(req)
   {
     let responses    = [],
         port         = this.port,
         self         = this;
     req.app.set('sendingStatus', 'sending');
+    self.emit('startToSendMessage');
     const sending      = new Promise((resolve)=>{
       async function sendingMessage(index, messIndex) {
         let       data               = req.app.get('dataStack'),
@@ -108,7 +110,7 @@ class handlerSms
           responses[index].phone   = data[0].phone;
           responses[index].message = mess;
           responses[index].userId  = data[0].userId;
-
+          self.emit('sendingMessage', responses[index]);
           req.body.sms         = {};
           req.body.sms.message = mess;
           req.body.sms.phone   = data[0].phone;
@@ -121,12 +123,13 @@ class handlerSms
           req.userQ        = {};
           req.userQ.id     = data[0].userId;
 
-          let userSearch       = await self.getUser(req);
-              req.body.sentSMS = userSearch.sentSMS + 1;
-          let id               = mongoose.Types.ObjectId(data[0].userId);
+          let userSearch           = await self.getUser(req);
+              req.body.sendSMS     = userSearch.sendSMS + 1;
+          let id                   = mongoose.Types.ObjectId(data[0].userId);
           await self.user.findByIdAndUpdate(id, req.body);
 
           if (userWthActiveOrder[data[0].userId]===0) {
+            self.emit('userEndActiveOrder', data[0].userId);
             delete userWthActiveOrder[data[0].userId];
             req.app.set('userWthActiveOrder', userWthActiveOrder);
           }
@@ -147,15 +150,15 @@ class handlerSms
           req.app.set('userWthActiveOrder', {});
           req.app.set('sendingStatus', 'end');
           responses.status = 200;
+          self.emit('endToSendMessage', responses);
           resolve(responses);
         }
       }
       return sendingMessage(0,0);
     });
     return sending;
-  }
-  read(){
-    let self = this;
+  };
+  this.read = function(){
     // console.log(e)
     // const reader = new Readline({delimiter: '\r\n'});
 
@@ -164,7 +167,7 @@ class handlerSms
     });
 
     this.port.port.pipe(reader);*/
-    this.port.port.on('data',(e=>
+    this.port.port.on('data',(()=>
       {
         // console.log(e.toString('utf8'));
       }));
@@ -175,12 +178,12 @@ class handlerSms
     // this.port.at("AT+CMGD=1,4");
     this.port.at('AT+CMGL="ALL"');
     // this.port.at('AT').then(e=>this.port.at('ATDP*55;\r'));
-  }
-  deleteSimMerssage(){
+  };
+  this.deleteSimMerssage= function(){
     this.port.at('AT+CMGD=1,4')
     .then(e=>console.log(e));
-  }
-  setData()
+  };
+  this.setData = function()
   {
     let promiseGetData = new Promise( (resolve, reject) => {
       this.port.open()
@@ -188,7 +191,9 @@ class handlerSms
       .catch(e=>reject('Error to try open the port '+e));
     });
     return promiseGetData;
-  }
+  };
 }
 
-module.exports = handlerSms;
+util.inherits(HandlerSms, events.EventEmitter);
+
+module.exports = HandlerSms;

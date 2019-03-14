@@ -11,7 +11,7 @@ const cors       = require ( 'cors');
 const smsApi     = require('./routes/sms.js');
 const userApi    = require('./routes/user.js');
 const HandlerSms = require('./services/atSMS.js');
-const config     = require('./globalConfig');
+const config = require('./services/globalConfig');
 const app        = express();
 
 const { passportIni } = require('./passport/localAuth');
@@ -57,15 +57,16 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/* app.use(function (req, res, next) {
-  req.session.COM8 = 'ready';
-  res.locals.session = req.session;
-  next();
-});*/
+// app.use(function (req, res, next) {
+//   /* req.session.COM8 = 'ready';
+//   res.locals.session = req.session; */
+//   console.log(req.session);
+//   next();
+// });
 
-app.set('socketio', io);
 app.set('dataStack', []);
 app.set('userWthActiveOrder', {});
+app.set('seccionUsers', {});
 app.set('smsCountStack', 0);
 app.set('sendingStatus', 'end');
 
@@ -79,6 +80,6 @@ app.get('/',(req, res)=>{
   res.send(`Hola has visto esta pagina ${req.session.visitas} ${req.session.visitas===1?'vez':'veces'}`);
 });
 
-require('./sockets')(io);
+require('./sockets')(io,app);
 
 module.exports = server;

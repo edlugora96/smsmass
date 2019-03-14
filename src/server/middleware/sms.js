@@ -10,12 +10,12 @@ async function sendCtrl(req, res, next) {
     });
   }
   else {
-    const data = await HandlerSmsMass.digestedData(req.body.message, req.body.contacts, req.user, req, res);
+    const data               = await HandlerSmsMass.digestedData(req.body.message, req.body.contacts, req.user, req, res);
+    let   userWthActiveOrder = req.app.get('userWthActiveOrder');
+    let   smsCountStack      = req.app.get('smsCountStack');
+    let   dataStack          = req.app.get('dataStack');
     if (data) {
-      let userWthActiveOrder = req.app.get('userWthActiveOrder');
       if (!userWthActiveOrder[req.user._id]) {
-        let smsCountStack = req.app.get('smsCountStack');
-        let dataStack = req.app.get('dataStack');
         for (let fact of data) {
           dataStack.push(fact);
         }

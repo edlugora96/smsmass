@@ -1,5 +1,5 @@
 /* jshint unused:false */
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '$redux/actions.js';
@@ -10,18 +10,14 @@ import template from './formLoginTemplate';
 import './styles/login.styl';
 
 
-class Login extends Component {
+const Login = (props) => pug`
+  React.Fragment
+    section.loggin
+      h1 Iniciar seccion
 
-  render() {
-    return pug`
-      React.Fragment
-        section.loggin
-          h1 Iniciar seccion
+      FormikJson(template=template["login"], ...props)
+`;
 
-          FormikJson(template=template["login"])
-    `;
-  }
-}
 
 const mapStateToProps = () => ({
   ...store.getState()

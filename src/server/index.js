@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const app      = require('./appServer');
-const config   = require('./globalConfig');
+const config   = require('./services/globalConfig');
 // const localtunnel = require('localtunnel');
 // const http = require('http');
 

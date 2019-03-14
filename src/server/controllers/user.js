@@ -2,32 +2,38 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt      = require('jsonwebtoken');
 const User     = require('../mongo/modelUser');
-const config   = require('../globalConfig');
+const config   = require('../services/globalConfig');
 
-function signIn (req, res) {
-  // let io = req.app.get('socketio');
-  // console.log(io);
- if(req.isAuthenticated()){
-   return res.status(400).send({
-     message: 'Already session active.'
-   });
- }
+function signIn(req, res) {
   passport.authenticate('local', function (err, user,info){
-    if(err) {return res.status(500).send({message: String(err)});}
+    if (err) {return res.status(500).send({message: String(err)});}
     if (!user) {
       return res.status(400).send({
         message: `Loggin invalid Server: ${info}`
       });
     }
-    req.logIn(user, function (err){
-      if (err) {return res.status(500).send({message: String(err)});}
-      const token = jwt.sign(user.toJSON(), config.SECRET_TOKEN, {expiresIn: 600000});
-      res.status(200).send({message: 'Succes loggin',token: `bearer ${token}`});
+    let seccionUsers = req.app.get('seccionUsers');
+    if (user._id in seccionUsers) {
+      return res.status(401).send({
+        message: `Existe otro usuario usando esta cuenta`
+      });
+    }
+    req.logIn(user, function (err) {
+      if (err) { return res.status(500).send({ message: String(err) }); }
+      const token = jwt.sign(user.toJSON(), config.SECRET_TOKEN, { expiresIn: req.body.remember ? '7d' : '7h' });
+      let addUserIo = req.app.get('addUserIo');
+      addUserIo(token);
+      res.status(200).send({ message: 'Succes loggin', token: `bearer ${token}` });
     });
   })(req, res);
 }
 
 function logout(req, res) {
+  let usersIo = req.app.get('usersIo');
+  usersIo[req.user._id].emit('logout', ['out', req.user._id]);
+  let seccionUsers = req.app.get('seccionUsers');
+  delete seccionUsers[req.user._id];
+  req.app.set('seccionUsers', seccionUsers);
   req.logout();
   res.status(200).send({message: 'Succes logout'});
 }
@@ -72,8 +78,9 @@ function signUp (req, res) {
   newUser.sex = req.body.sex;
   newUser.description = req.body.description;
   newUser.social = req.body.social;
+  newUser.notifications = req.body.notifications;
   newUser.monthlySMS = req.body.monthlySMS||25;
-  newUser.sentSMS = req.body.sentSMS||0;
+  newUser.sendSMS = req.body.sendSMS||0;
   newUser.save((err) => {
     if (err) {res.status(500).send({message: String(err)});}
     else {
@@ -81,7 +88,7 @@ function signUp (req, res) {
         if (err)
           {res.status(500).send({message: String(err)});}
         const token = jwt.sign(newUser.toJSON(), config.SECRET_TOKEN, {
-          expiresIn: 600000
+          expiresIn: '7h'
         });
         res.status(200).send({message:'Successfully created user', token:`bearer ${token}`});
       });
