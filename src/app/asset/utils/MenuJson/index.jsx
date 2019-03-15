@@ -1,15 +1,17 @@
 /* jshint unused:false */
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'; // eslint-disable-line no-unused-vars
 
 import * as actions from '$redux/actions.js';
 import store from '$redux/store.js';
 import './styles/menujson.styl';
-import Structure from './Structure';
+import GuardWrap from '$utils/HoC/GuardWrap'; // eslint-disable-line no-unused-vars
+
 const sidebarMenu = [
   {
     active: true,
-    loginEnv: 'none',
+    loginEnv: 'any',
     title: 'Inicio',
     href: '/',
     attr:{
@@ -72,7 +74,7 @@ const sidebarMenu = [
   },
   {
     active: false,
-    loginEnv: 'none',
+    loginEnv: 'any',
     title: 'Apoyar',
     href: '/',
     attr:{
@@ -81,10 +83,11 @@ const sidebarMenu = [
   }
 ];
 
-const MenuJson = () => pug`
+const MenuJson = (props) => pug`
   React.Fragment
     each links, index in sidebarMenu
-      Structure(...links, key=index+"Links"+links.title)
+      GuardWrap(...props, key=index+"link"+links.title loginEnv=links.loginEnv)
+        Link(...links.attr, to=links.href)= links.title
 `;
 
 const mapStateToProps = () => ({

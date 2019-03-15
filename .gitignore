@@ -1,4 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# {
+#   "access_token": "ca00eb379e948e004eeb136bda5745e34ebf8e00",
+#   "gist_id": "9faa006edca55f656ac544c87be4be6e"
+# }
 
 # dependencies
 /node_modules

@@ -8,7 +8,12 @@ import logo from '$img/avatar.jpg';
 import MenuJson from '$utils/MenuJson';
 import './styles/adside.styl';
 
-const AdsideNav = () => pug`
+const AdsideNav = (props) =>{
+  const {
+    loginToken
+  } = props,
+  isLogin = typeof loginToken === 'string';
+return pug`
   React.Fragment
     .logo
       a.simple-text.logo-mini(href="https://www.edlugora.tk")
@@ -19,9 +24,9 @@ const AdsideNav = () => pug`
         | EDLUGORA
 
     .sidebar-wrapper
-      MenuJson
+      MenuJson(isLogin=isLogin, needRedirect=false)
 `;
-
+};
 const mapStateToProps = () => ({
   ...store.getState()
 });

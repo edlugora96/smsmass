@@ -1,17 +1,15 @@
 /* jshint unused:false */
 import React from 'react';
-import { Link } from 'react-router-dom';
-import GuardRoute from '$utils/HoC/GuardRoute';
-const Structure = (props) => {
-  const RenderComponent = () => pug`
-    Link(...props.attr to=props.href)= props.title
-  `;
-  return pug`
-    if (props.loginEnv!=='none')
-      GuardRoute(loginEnv=props.loginEnv, RenderComponent=RenderComponent)
+import { Link } from 'react-router-dom'; // eslint-disable-line no-unused-vars
+import GuardWrap from '$utils/HoC/GuardWrap'; // eslint-disable-line no-unused-vars
+const Structure = (props) =>{
+return pug`
+  if (props.loginEnv!=='none')
+    GuardWrap(loginEnv=props.loginEnv)
+      Link(...props.attr to=props.href)= props.title
 
-    else
-      RenderComponent
-  `;
+  else
+    Link(...props.attr to=props.href)= props.title
+`;
 };
 export default Structure;
