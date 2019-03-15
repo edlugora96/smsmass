@@ -1,0 +1,28 @@
+{
+ "folders": [
+  {
+   "folder_exclude_patterns": [
+    "node_modules",
+    ".vscode",
+    "scripts",
+    "build",
+    "public",
+    "config",
+    "src/app/asset/fonts",
+    "src/app/asset/img",
+   ],
+   "path": "/C/www/smsmass/",
+   "file_exclude_patterns": [
+    ".gitignore",
+    ".jshintrc",
+    "assets.json",
+    "nodemon.json",
+    "package-lock.json",
+    "README.md",
+    "semantic.json",
+    "src/app/serviceWorker.js",
+    "src/app/App.test.js",
+   ]
+  }
+ ]
+}

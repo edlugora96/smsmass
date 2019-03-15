@@ -22,34 +22,34 @@ class App extends Component {
     loginToken
   } = this.props,
   isLogin = typeof loginToken === 'string';
-    return pug`
-      BrowserRouter
-        React.Fragment
-          header.headerLayout
-            Header
+  return pug`
+    BrowserRouter
+      React.Fragment
+        header.headerLayout
+          Header
 
-          aside.sidenav(data-color="white", data-active-color="danger")
-            Adside
+        aside.sidenav(data-color="white", data-active-color="danger")
+          Adside
 
-          main.main-panel
-            Switch
-              Route(exact path="/" component=Home)
+        main.main-panel
+          Switch
+            Route(exact path="/" component=Home)
 
-              GuardWrap(loginEnv=true isLogin=isLogin needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
-                Route(exact path="/app" component=SMS)
+            GuardWrap(isLogin=isLogin loginEnv=isLogin needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
+              Route(exact path="/login" component=Login)
 
-              GuardWrap(loginEnv=true isLogin=isLogin needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
-                Route(exact path="/user/:id" component=User)
+            GuardWrap(isLogin=isLogin loginEnv=true needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
+              Route(exact path="/app" component=SMS)
 
-              GuardWrap(loginEnv=false isLogin=isLogin needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
-                Route(exact path="/login" component=Login)
+            GuardWrap(isLogin=isLogin loginEnv=true needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
+              Route(exact path="/user/:id" component=User)
 
-              GuardWrap(loginEnv=true isLogin=isLogin needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
-                Route(exact path="/logout" component=Home)
+            GuardWrap(isLogin=isLogin loginEnv=true needRedirect=true Redirect=Redirect pathLogin="/user/4a4wda" pathLogout="/")
+              Route(exact path="/logout" component=Home)
 
-          footer.footer.footer-black.footer-white
-            Footer
-    `;
+        footer.footer.footer-black.footer-white
+          Footer
+  `;
   }
 }
 

@@ -87,11 +87,5 @@ const GuardWrap = (props) => {
   else {
     return false;
   }
-
-  // if (loginEnv) {
-  // }
-  // else {
-  //   return options.redirect;
-  // };
 };
 export default GuardWrap;
