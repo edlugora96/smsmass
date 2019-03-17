@@ -63,21 +63,27 @@ import React from 'react';
 const GuardWrap = (props) => {
   const {
     Redirect,
-    loginEnv,
     isLogin,
     children,
     needRedirect,
     pathLogin,
-    pathLogout
+    pathLogout,
+    component: Component,
+    componentProps
   } = props;
+  const loginEnv = componentProps? componentProps.loginEnv : props.loginEnv;
+  const RendC = pug`
+    Component(...componentProps)
+  `;
+  const RenderComponent = Component? RendC :children;
   if (loginEnv==='any') {
-    return children;
+    return RenderComponent;
   }
   else if (!loginEnv && !isLogin) {
-    return children;
+    return RenderComponent;
   }
   else if (loginEnv && isLogin) {
-    return children;
+    return RenderComponent;
   }
   else if(needRedirect){
     return pug`
@@ -89,3 +95,4 @@ const GuardWrap = (props) => {
   }
 };
 export default GuardWrap;
+
