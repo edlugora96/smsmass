@@ -32,6 +32,23 @@ export const fetchServer = async (url, body, from, query) => {
   return res;
 };
 
+export const fetchPutServer = async (url, body, from, query) => {
+  let endPoint = apiEndpoint(url, query, from);
+  const res = await request.put(endPoint)
+          .send(body)
+          .set({
+            Accept       : 'application/json',
+            Authorization: localStorage.getItem('auth')
+          })
+          .then((data) => {
+            return data;
+          })
+          .catch((data) => {
+            return data;
+          });
+  return res;
+};
+
 export const fetchGetServer = async (url, body, from, query) => {
   let endPoint = apiEndpoint(url, query, from);
   let res = await request.get(endPoint)

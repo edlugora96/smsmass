@@ -7,4 +7,4 @@ export const insertTextOnCursor = (el, newText) => {
   el.value = (before + newText + after);
   el.selectionStart = el.selectionEnd = start + newText.length;
   el.focus();
-}
+};

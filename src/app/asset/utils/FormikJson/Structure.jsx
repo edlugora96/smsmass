@@ -1,120 +1,116 @@
-/* jshint unused:false */
 import React from 'react';
-import { FastField, ErrorMessage } from 'formik';
-const areaInput = (props) => {
-  const change = (e)=>{
-    if(props.onChange){props.onChange(e,props);}
-    props.field.onChange(e);
-  };
-  const blur = (e)=>{
-    if(props.onBlur){props.onBlur(e,props);}
-    props.field.onBlur(e);
-  };
-  return pug`
-    textarea(...props.attr, type=props.type, onFocus=props.onFocus, onBlur=blur, onChange=change)
-  `;
-};
+import { areaInput, selecttInput, generalInput } from './Inputs.jsx';
 
-const selecttInput = (props) => {
-  const change = (e) => {
-    if (props.onChange) { props.onChange(e,props); }
-    props.field.onChange(e);
-  };
-  const blur = (e) => {
-    if (props.onBlur) { props.onBlur(e,props); }
-    props.field.onBlur(e);
-  };
-  return pug`
-    select(...props.attr, onFocus=props.onFocus, onBlur=blur, onChange=change).ui.fluid.dropdown
-      option(value="")= props.title
-
-      if (typeof props.options==="array")
-        each opt, indx in props.options
-          option(...opt.attr,key=props.attr.id+indx+"option"+opt.value ,value=opt.value)= opt.title
-
-      else if (typeof props.options==="string")
-        each opt, indx in props[props.options]
-          if (typeof opt === "string")
-            option(...opt.attr,key=props.attr.id+indx+"option"+opt ,value=opt)= opt
-
-          else
-            option(...opt.attr,key=props.attr.id+indx+"option"+opt.value ,value=opt.value)= opt.title
-  `;
-};
-
-const generalInput = (props) => {
-  const change = (e) => {
-    if (props.onChange) { props.onChange(e,props); }
-    props.field.onChange(e);
-  };
-  const blur = (e) => {
-    if (props.onBlur) { props.onBlur(e,props); }
-    props.field.onBlur(e);
-  };
-  return pug`
-    input(...props.attr, type=props.type, onFocus=props.onFocus, onBlur=blur, onChange=change)
-  `;
-};
 const Structure = (props) => {
+  const {
+    FormShapes,
+    FormShape,
+    readOnly,
+    Component
+  }= props,
+  MerFormShapes = {
+    ...FormShapes,
+    ...FormShape
+  };
   if (props.type === 'select') {
-    return pug`
-      .field(key=props.index+props.title)
-        if (props.label !== 'none')
-          label(htmlFor=props.attr.id)= props.title
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title,...props)
+          if (props.label !== 'none')
+            MerFormShapes.Label(...props)
 
-        FastField(component=selecttInput, ...props)
+          MerFormShapes.Input(component=selecttInput, ...props)
 
-        ErrorMessage(...props.attr)
-  `;
+          if(!readOnly)
+            MerFormShapes.ErrorMessage(...props)
+    `;
+    }
   }
   else if (props.type === 'textContainer') {
-    return pug`
-      .field(key=props.index+props.title)
-        if (props.title)
-          label= props.title
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title,...props)
+          if (props.title)
+            label= props.title
 
-        p(...props.attr)= props.text
-  `;
+          p(...props.attr)= props.text
+      `;
+    }
   }
   else if (props.type === 'textarea') {
-    return pug`
-      .field(key=props.index+props.title)
-        if (props.label !== 'none')
-          label(htmlFor=props.attr.id)= props.title
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title,...props)
+          if (props.label !== 'none')
+            MerFormShapes.Label(...props)
 
-        FastField(component=areaInput, ...props)
+          MerFormShapes.Input(component=areaInput, ...props)
 
-        ErrorMessage(...props.attr)
-  `;
+          if(!readOnly)
+            MerFormShapes.ErrorMessage(...props)
+      `;
+    }
   }
   else if (props.type === 'cancelOrSubmit') {
-    return pug`
-      .ui.buttons(key=props.index+props.title)
-        if (typeof props.btnHandlerCancel === "string")
-          button(...props.attrCancle, onClick=props[props.btnHandlerCancel], type="reset").ui.button= props.titleCancel
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      // const btnHandlerCancel = typeof props.btnHandlerCancel === "string"? props[props.btnHandlerCancel] : props.btnHandlerCancel;
+      // const btnHandlerSubmits = typeof props.btnHandlerSubmits === "string"? props[props.btnHandlerSubmits] : props.btnHandlerSubmits;
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title, ...props)
+          button(...props.attrCancle, onClick=props[props.btnHandlerCancel], type="reset").ui.button= props.titleCancel?props.titleCancel:'Cancelar'
 
-        else
-          button(...props.attrCancle, onClick=props.btnHandlerCancel, type="reset").ui.button= props.titleCancel?props.titleCancel:'Cancelar'
+          .or(data-text="o")
 
-        .or(data-text="o")
-
-        if (typeof props.btnHandlerCancel === "string")
-          button(...props.attrSubmit, onClick=props[props.btnHandlerSubmits] type=props.type).ui.positive.button= props.titleSumit
-
-        else
-          button(...props.attrSubmit, onClick=props.btnHandlerSubmit type=props.type).ui.positive.button= props.titleSumit?props.titleSumit:'Enviar'
-  `;
+          button(...props.attrSubmit, onClick=()=>props[props.btnHandlerSubmits], type="submit").ui.positive.button= props.titleSumit?props.titleSumit:'Enviar'
+      `;
+    }
+  }
+  else if (props.type === 'submit') {
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      const btnHandlerSubmits = typeof props.btnHandlerSubmits === "string"? props[props.btnHandlerSubmits] : props.btnHandlerSubmits;
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title, ...props)
+          button(...props.attrSubmit, onClick=btnHandlerSubmits, type="submit").ui.positive.button= props.titleSumit?props.titleSumit:'Enviar'
+      `;
+    }
   }
   else {
-    return pug`
-      .field(key=props.index+props.title)
-        if (props.label !== 'none')
-          label(htmlFor=props.attr.id)= props.title
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title, ...props)
+          if (props.label !== 'none')
+            MerFormShapes.Label(...props)
 
-        FastField(...props, component=generalInput)
+          MerFormShapes.Input(component=generalInput, ...props)
 
-        ErrorMessage(...props.attr)
-    `;
+          if(!readOnly)
+            MerFormShapes.ErrorMessage(...props)
+      `;
+    }
   }
 };
 export default Structure;

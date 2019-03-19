@@ -1,7 +1,5 @@
 import * as Yup from 'yup';
-import { fetchServer } from '$utils/fetchServer';
-// import socket from '$app/socketsClient';
-
+import Auth from '$utils/auth';
 export default {
   login:
   {
@@ -53,15 +51,9 @@ export default {
         .required('Required'),
     }),
     onSubmit: async (values, { props }) => {
-      const res = await fetchServer('users/signIn', values, 'server');
-      if (res.status === 200) {
-        props.saveLogin(res.body.token);
-        localStorage.setItem('auth', res.body.token);
-      } else {
-        localStorage.removeItem('auth');
-      }
-      // localStorage.getItem("auth");
-      // localStorage.removeItem("key");
+      Auth.login(values, props);
     },
   },
 };
+// localStorage.getItem("auth");
+// localStorage.removeItem("key");

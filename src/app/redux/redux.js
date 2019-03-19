@@ -8,14 +8,6 @@ const dataTable = createReducer(
   [actions.saveTable]: (state, action) => state = action.payload
 });
 
-// Socket IO
-const socketClient = createReducer(
-  {},
-{
-  [actions.saveSocket]: (state, action) => state = action.payload
-});
-
-
 // Login
 const loginToken = createReducer(
   localStorage.getItem('auth'),
@@ -23,8 +15,15 @@ const loginToken = createReducer(
   [actions.saveLogin]: (state, action) => state =action.payload
 });
 
+// Verfy Session
+// const verfySession = createReducer(
+//   false,
+// {
+//   [actions.setVerfySession]: (state, action) => state =action.payload
+// });
+
+  // verfySession,
 export default {
   dataTable,
-  socketClient,
   loginToken
 };

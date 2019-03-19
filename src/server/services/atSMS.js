@@ -1,5 +1,3 @@
-const events      = require('events');
-const util        = require('util');
 const mongoose    = require('mongoose');
 const User        = require('../mongo/modelUser');
 const { saveSMS } = require('../controllers/sms');
@@ -12,7 +10,7 @@ const portConst = new Port('COM8', {
      baudRate   : 9600,
      dataBits   : 8,
      parity     : 'none',
-     read_time  : 6000,
+     read_time  : 1000,
      stopBits   : 1,
      flowControl: false,
      xon        : false,
@@ -21,8 +19,39 @@ const portConst = new Port('COM8', {
      xany       : false,
      buffersize : 0
 });
+
+const handlerDB = async ({req,mess,data,smsResult,self}) => {
+  req.body.sms         = {};
+  req.body.sms.message = mess;
+  req.body.sms.phone   = data[0].phone;
+  req.body.result      = smsResult;
+  req.body.userId      = data[0].userId;
+
+  req.sms = await self.saveSMS(req);
+
+  req.body         = {};
+  req.userQ        = {};
+  req.userQ.id     = data[0].userId;
+
+  let userSearch           = await self.getUser(req);
+      req.body.sendSMS     = userSearch.sendSMS + 1;
+  let id                   = mongoose.Types.ObjectId(data[0].userId);
+  await self.user.findByIdAndUpdate(id, req.body);
+};
+
+const handlerActiveOrder = ({userWthActiveOrder,data,io,req}) => {
+  if (userWthActiveOrder[data[0].userId]===0) {
+      io[req.user._id].emit('userEndActiveOrder', data[0].userId);
+      delete userWthActiveOrder[data[0].userId];
+      req.app.set('userWthActiveOrder', userWthActiveOrder);
+    }
+    else if (userWthActiveOrder[data[0].userId]) {
+      userWthActiveOrder[data[0].userId] = (userWthActiveOrder[data[0].userId]*1)-1;
+      req.app.set('userWthActiveOrder', userWthActiveOrder);
+    }
+};
+
 function HandlerSms(){
-  events.EventEmitter.call(this);
   const self = this;
   this.port       = portConst;
   this.saveSMS    = saveSMS;
@@ -31,8 +60,14 @@ function HandlerSms(){
   this.user       = User;
 
   this.digestedData= async function(mwod, cwod, user, req, res) {
-    if(mwod===undefined||cwod===undefined){
-      throw new Error('The data to be sent can not be blank');
+    const valid = `(verify)(?=.*${req.body.toValidate})`;
+    const regExp = new RegExp (valid, 'g');
+    const isVerify = regExp.test(req.originalUrl);
+    if (!isVerify) {
+      if(mwod===undefined||cwod===undefined){
+        res.status(500).send({message:'The data to be sent can not be blank'});
+        return false;
+      }
     }
     req.userQ = {};
     req.userQ.id = user._id;
@@ -55,6 +90,7 @@ function HandlerSms(){
         dataDigest[i].phone   = contact.phone;
         dataDigest[i].userId  = user._id;
         dataDigest[i].sendSMS = user.sendSMS;
+        dataDigest[i].countSms = messageWtOutDigest.length===0&&0;
         messageTemp[i]         = [];
         let         j          = 0;
         for (let partMessage of messageWtOutDigest) {
@@ -86,8 +122,10 @@ function HandlerSms(){
     let responses    = [],
         port         = this.port,
         self         = this;
+    const verifyMess = req.body.message && `Bienvenido a EdluGora.\nEl codigo de verificacion es:\n${req.body.message}\nCopielo respetando las mayusculas puede que tenga guiones (-).`;
+    const io = req.app.get('usersIo');
     req.app.set('sendingStatus', 'sending');
-    self.emit('startToSendMessage');
+    io[req.user._id].emit('startSMSsend');
     const sending      = new Promise((resolve)=>{
       async function sendingMessage(index, messIndex) {
         let       data               = req.app.get('dataStack'),
@@ -99,44 +137,24 @@ function HandlerSms(){
         }
         if (data[0])
         {
+          data[0].message = req.body.message?verifyMess:data[0].message;
           let mess = Array.isArray(data[0].message) ? '' : data[0].message;
           if (Array.isArray(data[0].message)) {
             mess = data[0].message[messIndex];
           }
-          //const smsResult = await port.at("AT+CMGF=1\rAT+CMGS=\""+data[0].phone+"\"\r"+mess+Buffer([0x1A])+"^z")
-          const smsResult = await port.at('AT+CMGF=1');
+          const finalMessageBuffer = new Buffer([0x1A]);
+          const smsResult = await port.at("AT+CMGF=1\rAT+CMGS=\""+data[0].phone+"\"\r"+mess+finalMessageBuffer+"^z");
+          // const smsResult = await port.at('AT+CMGF=1');
 
           responses[index].result  = smsResult;
           responses[index].phone   = data[0].phone;
           responses[index].message = mess;
           responses[index].userId  = data[0].userId;
-          self.emit('sendingMessage', responses[index]);
-          req.body.sms         = {};
-          req.body.sms.message = mess;
-          req.body.sms.phone   = data[0].phone;
-          req.body.result      = smsResult;
-          req.body.userId      = data[0].userId;
+          console.log(responses[index]);
+          io[req.user._id].emit('sendingMessage', responses[index]);
+          handlerDB({req,mess,data,smsResult,self});
+          handlerActiveOrder({userWthActiveOrder,data,io,req});
 
-          req.sms = await self.saveSMS(req);
-
-          req.body         = {};
-          req.userQ        = {};
-          req.userQ.id     = data[0].userId;
-
-          let userSearch           = await self.getUser(req);
-              req.body.sendSMS     = userSearch.sendSMS + 1;
-          let id                   = mongoose.Types.ObjectId(data[0].userId);
-          await self.user.findByIdAndUpdate(id, req.body);
-
-          if (userWthActiveOrder[data[0].userId]===0) {
-            self.emit('userEndActiveOrder', data[0].userId);
-            delete userWthActiveOrder[data[0].userId];
-            req.app.set('userWthActiveOrder', userWthActiveOrder);
-          }
-          else if (userWthActiveOrder[data[0].userId]) {
-            userWthActiveOrder[data[0].userId] = (userWthActiveOrder[data[0].userId]*1)-1;
-            req.app.set('userWthActiveOrder', userWthActiveOrder);
-          }
           if (Array.isArray(data[0].message)) {
             sendingMessage(index + 1, messIndex = messIndex === data[0].message.length-1 ? 0 : messIndex + 1);
           }
@@ -150,7 +168,7 @@ function HandlerSms(){
           req.app.set('userWthActiveOrder', {});
           req.app.set('sendingStatus', 'end');
           responses.status = 200;
-          self.emit('endToSendMessage', responses);
+          io[req.user._id].emit('endSMSsend', responses);
           resolve(responses);
         }
       }
@@ -194,6 +212,5 @@ function HandlerSms(){
   };
 }
 
-util.inherits(HandlerSms, events.EventEmitter);
-
-module.exports = HandlerSms;
+const instHandlerSms = new HandlerSms();
+module.exports = instHandlerSms;

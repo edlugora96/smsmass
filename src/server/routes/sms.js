@@ -2,16 +2,18 @@
 const express = require('express');
 const timeout = require('connect-timeout');
 //Controllers
-const { sendSms } = require('../middleware/sms');
+const { sendSms, sendCtrl, sendNext } = require('../middleware/sms');
+const { redisStore } = require('../middleware/redis');
+const { sendEmail } = require('../services/mail');
 
 //Express router
 const Router = express.Router();
 
 //Passport Config
-const {isAuth} = require('../passport/localAuth');
-// const {isAuthJWT} = require('../passport/JWTAuth');
-const {sendCtrl} = require('../middleware/sms');
+const {isAuthJWT} = require('../passport/JWTAuth');
 
-Router.post('/send', timeout('86400s'), isAuth, sendCtrl, sendSms);
+Router.post('/send', timeout('86400s'), isAuthJWT, sendCtrl, sendSms);
+Router.post('/verify/phone', timeout('86400s'), isAuthJWT, sendCtrl, redisStore, sendNext);
+Router.post('/verify/email', timeout('86400s'), isAuthJWT, redisStore, sendEmail);
 
 module.exports = Router;

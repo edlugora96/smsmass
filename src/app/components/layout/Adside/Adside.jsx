@@ -6,13 +6,10 @@ import * as actions from '$redux/actions.js';
 import store from '$redux/store.js';
 import logo from '$img/avatar.jpg';
 import MenuJson from '$utils/MenuJson';
+
 import './styles/adside.styl';
 
 const AdsideNav = (props) => {
-  const {
-    loginToken
-  } = props,
-  isLogin = typeof loginToken === 'string';
   return pug`
     React.Fragment
       .logo
@@ -24,7 +21,7 @@ const AdsideNav = (props) => {
           | EDLUGORA
 
       .sidebar-wrapper
-        MenuJson(isLogin=isLogin, needRedirect=false)
+        MenuJson
   `;
 };
 const mapStateToProps = () => ({

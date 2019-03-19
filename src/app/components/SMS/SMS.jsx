@@ -102,7 +102,7 @@ class SMS extends Component {
       return pug`
         h1 2do. Redactar el Mensaje
 
-        FormikJson(template=formTemplate["bodySMS"], data=dataTable,vars=headers, btnCancel=changerState.bind(this,false,false,true,false))
+        FormikJson(readOnly=false,template=formTemplate["bodySMS"], data=dataTable,vars=headers, btnCancel=changerState.bind(this,false,false,true,false))
       `;
     }
     else{

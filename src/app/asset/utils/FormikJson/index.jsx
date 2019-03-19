@@ -1,6 +1,6 @@
 /* jshint unused:false */
 import React from 'react';
-import { withFormik, Form as Formik } from 'formik';
+import { withFormik, Form as Formik, Field as FastField, ErrorMessage  } from 'formik';
 import Structure from './Structure.jsx';
 import './styles/form.styl';
 
@@ -20,10 +20,28 @@ const optFormik = {
   },
 };
 
+const FormShapes = {
+  Parent: (props) => {
+    const {
+      children: Childdren
+    } = props;
+    return <div className="field"> {Childdren} </div>;
+  },
+  Label :(props) => pug`
+    label(htmlFor=props.attr.id)= props.title
+  `,
+  Input :(props) => pug`
+    FastField(...props)
+  `,
+  ErrorMessage :(props) => pug`
+    ErrorMessage(...props.attr)
+  `
+};
+
 const FormikJson = (props) => pug`
   Formik(role="form").ui.form
     each elemt, index in props.template.components
-      Structure(key=index,...props,...elemt, index=index)
+      Structure(key=index,...props,...elemt, index=index, FormShapes=FormShapes)
 `;
 
 export default withFormik(optFormik)(FormikJson);

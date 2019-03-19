@@ -1,6 +1,5 @@
-const moment         = require('moment');
-const HandlerSmsObj = require('../services/atSMS.js');
-const HandlerSmsMass = new HandlerSmsObj();
+// const moment         = require('moment');
+const HandlerSmsMass = require('../services/atSMS.js');
 
 async function sendCtrl(req, res, next) {
   let sMSSvailable = req.user.monthlySMS - req.user.sentSMS;
@@ -24,15 +23,15 @@ async function sendCtrl(req, res, next) {
         req.app.set('dataStack', dataStack);
         req.app.set('userWthActiveOrder', userWthActiveOrder);
         req.app.set('smsCountStack', smsCountStack);
-        const format = 'hh:mm:ss';
-        const time = moment(Date.now(), format),
-          beforeTime = moment('05:00:00', format),
-          afterTime = moment('22:00:00', format);
-        if (!time.isBetween(beforeTime, afterTime)) {
-          res.status(400).send({
-            message: `The service to send SMS start at ${beforeTime} and end at ${afterTime} hour "GMT -4:30".`
-          });
-        } else {
+        // const format = 'hh:mm:ss';
+        // const time = moment(Date.now(), format),
+        //   beforeTime = moment('05:00:00', format),
+        //   afterTime = moment('22:00:00', format);
+        // if (!time.isBetween(beforeTime, afterTime)) {
+        //   res.status(400).send({
+        //     message: `The service to send SMS start at ${beforeTime} and end at ${afterTime} hour "GMT -4:30".`
+        //   });
+        // } else {
           if (smsCountStack < 9600) {
             next();
           } else {
@@ -40,7 +39,7 @@ async function sendCtrl(req, res, next) {
               message: 'Server to many busy, please wait calmly.'
             });
           }
-        }
+        // }
       }
       else {
         res.status(400).send({
@@ -49,7 +48,7 @@ async function sendCtrl(req, res, next) {
       }
     }
   }
-};
+}
 
 async function sendSms(req, res) {
   let sendingStatus = req.app.get('sendingStatus');
@@ -58,7 +57,6 @@ async function sendSms(req, res) {
   }
   res.status(200).send({ message: 'Sending...' });
 }
-
 
 function sendNext(req, res) {
   let sendingStatus = req.app.get('sendingStatus');

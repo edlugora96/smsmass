@@ -4,7 +4,8 @@
 		{
 			"file_exclude_patterns":
 			[
-				".gitignore",
+				"flickr(subir imagenes)-- ignore.text",
+				".travis.yml",
 				".jshintrc",
 				"assets.json",
 				"nodemon.json",

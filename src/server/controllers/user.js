@@ -22,7 +22,8 @@ function signIn(req, res) {
       if (err) { return res.status(500).send({ message: String(err) }); }
       const token = jwt.sign(user.toJSON(), config.SECRET_TOKEN, { expiresIn: req.body.remember ? '7d' : '7h' });
       let addUserIo = req.app.get('addUserIo');
-      addUserIo(token);
+      console.log(addUserIo);
+      addUserIo && addUserIo(token);
       res.status(200).send({ message: 'Succes loggin', token: `bearer ${token}` });
     });
   })(req, res);
@@ -30,9 +31,9 @@ function signIn(req, res) {
 
 function logout(req, res) {
   let usersIo = req.app.get('usersIo');
-  usersIo[req.user._id].emit('logout', ['out', req.user._id]);
+  usersIo && usersIo[req.user._id].emit('logout', ['out', req.user._id]);
   let seccionUsers = req.app.get('seccionUsers');
-  delete seccionUsers[req.user._id];
+  seccionUsers && delete seccionUsers[req.user._id];
   req.app.set('seccionUsers', seccionUsers);
   req.logout();
   res.status(200).send({message: 'Succes logout'});
@@ -73,7 +74,9 @@ function signUp (req, res) {
   newUser.lastName = req.body.lastName;
   newUser.avatar = req.body.avatar;
   newUser.email = req.body.email;
+  newUser.ci = req.body.ci;
   newUser.phone = req.body.phone;
+  newUser.birthdate = req.body.birthdate;
   newUser.password = req.body.password;
   newUser.sex = req.body.sex;
   newUser.description = req.body.description;
@@ -82,11 +85,11 @@ function signUp (req, res) {
   newUser.monthlySMS = req.body.monthlySMS||25;
   newUser.sendSMS = req.body.sendSMS||0;
   newUser.save((err) => {
-    if (err) {res.status(500).send({message: String(err)});}
+    if (err) {res.status(500).send({message: err.errors});}
     else {
       req.logIn(newUser, (err)=>{
         if (err)
-          {res.status(500).send({message: String(err)});}
+          {res.status(500).send({message: err.errors});}
         const token = jwt.sign(newUser.toJSON(), config.SECRET_TOKEN, {
           expiresIn: '7h'
         });
@@ -98,30 +101,53 @@ function signUp (req, res) {
 
 function updateUser (req, res) {
   let userId = req.params.UserId || req.userQ.id;
-  let update = req.body;
   let id = mongoose.Types.ObjectId(userId);
-  User.findBeforeUpdate(id, update, (err, userUpdated) => {
-    if (err)
-    {
-      if(res){
-        res.status(500).send({message: String(err)});
-      }
-      else{
-        return { status:500,message: String(err) };
+  let update = {};
+      update.id = id;
+      update.backgorund      = req.body.backgorund;
+      update.avatar          = req.body.avatar;
+      update.password        = req.body.password;
+      update.phone           = req.body.phone;
+      update.name            = req.body.name;
+      update.lastName        = req.body.lastName;
+      update.sex             = req.body.sex;
+      update.passwordnew     = req.body.passwordnew;
+      update.passwordconfnew = req.body.passwordconfnew;
+      !req.body.backgorund && delete update.backgorund
+      !req.body.avatar && delete update.avatar
+      !req.body.password && delete update.password
+      !req.body.phone && delete update.phone
+      !req.body.name && delete update.name
+      !req.body.lastName && delete update.lastName
+      !req.body.sex && delete update.sex
+      !req.body.passwordnew && delete update.passwordnew
+      !req.body.passwordconfnew && delete update.passwordconfnew
+  User.findOneAndUpdate(id, update)
+    .exec((err, userUpdated) => {
+      if (err)
+      {
+        if(res){
+          res.status(500).send({message: err.errors});
+        }
+        else{
+          return { status:500,message: err.errors };
 
+        }
       }
-    }
-    else
-    {
-      if(res){
-        res.status(200).send({ user: userUpdated });
-      }
-      else{
-        return { status:200,user: userUpdated };
+      else
+      {
+        if(res){
+          const token = jwt.sign(userUpdated.toJSON(), config.SECRET_TOKEN, {
+            expiresIn: '7h'
+          });
+          res.status(200).send({message:'Successfully created user', token:`bearer ${token}`});
+        }
+        else{
+          return { status:200,user: userUpdated };
 
+        }
       }
-    }
-  });
+    });
 }
 
 function deleteUser (req, res) {

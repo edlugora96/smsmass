@@ -12,11 +12,12 @@ const {isAuthJWT} = require('../passport/JWTAuth');
 
 Router.get('/getAll', isAuthJWT, userCtrl.getUsers);
 Router.get('/get/:UserId', isAuthJWT, userCtrl.getUser);
-Router.post('/signUp', isAuthJWT, userCtrl.signUp);
+Router.post('/signUp', userCtrl.signUp);
 Router.put('/update/:UserId', isAuthJWT, userCtrl.updateUser);
 Router.delete('/delete/:UserId',isAuthJWT,  userCtrl.deleteUser);
 Router.post('/signIn', userCtrl.signIn);
 Router.get('/logout', isAuthJWT, userCtrl.logout);
+Router.get('/isauth', isAuthJWT);
 Router.get('/userInfo', isAuthJWT, (req, res)=>{
   res.json(req.user);
 });

@@ -1,14 +1,9 @@
 // const mongoose      = require('mongoose');
+const passport            = require('passport');
 const LocalStrategy       = require('passport-local').Strategy;
 const User                = require('../mongo/modelUser.js');
 
-function passportIni (passport) {
-  passport.serializeUser((user, done)=>{
-    done(null, user);
-  });
-  passport.deserializeUser((user, done)=>{
-      done(null,user);
-  });
+function passportIni (app) {
   const localOptios = {
     usernameField: 'email',
     passwordField: 'password',
@@ -18,9 +13,10 @@ function passportIni (passport) {
     localOptios,
     async (req, email, password, done) =>{
       try {
-        const userFound = await User.findOne({'email': email});
-        // const comparatePass = await User.comparePassword({ 'email': email }, password);
-        // console.log(comparatePass, req);
+        const userFound = await User.findOne({'email': email}).select('backgorund avatar verifiedUser monthlySMS sendSMS activeOrder notifications signupDate social _id phone name lastName email sex password');
+        // const comparatePass = await User.comparePassword(userFound.password[userFound.password.length-1], password);
+        // console.log(comparatePass, userFound.password[userFound.password.length-1], password);
+        delete userFound.password;
         if(!userFound){
           return done(null, false, {message:`${email} User not found.`});
         }
@@ -46,10 +42,7 @@ function isAuth (req, res, next) {
   });
 }
 
-
-
-
 module.exports = {
-  isAuth,
-  passportIni
+  passportIni,
+  isAuth
 };

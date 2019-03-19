@@ -2,15 +2,55 @@ const mongoose       = require('mongoose');
 const bcrypt         = require('bcrypt-nodejs');
 const arrayCodePhone = require('../services/onlyCodePhone.js');
 const Schema         = mongoose.Schema;
-const userSchema     = new Schema({
-  name    : {type: String, require:true},
-  lastName: {type: String, require:true},
-  avatar  : [String],
+
+const regExpPassword = '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})';
+const img = '(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})';
+const regExpOutput = (regExp)=>new RegExp(regExp,"g");
+const matchArray = (regExp, elemet) => {
+  if (elemet.length>1) {
+    return false;
+  } else if (elemet===''||elemet===' ') {
+    return false;
+  } else {
+    return regExpOutput(regExp).test(elemet[0]);
+  }
+};
+const uniqueValuePhone = (elemet) => {
+  main: for (var i = 0; i < elemet.length; i++) {
+    for (var j = 0; j < elemet.length; j++) {
+      if (i === j || i < j) {
+        continue;
+      } else if (!elemet[i].numberPhone) {
+        break main;
+      } else if (elemet[i].numberPhone === elemet[j].numberPhone) {
+        return false;
+      } else if (elemet[i].link==='main' || elemet[j].link==='main'){
+        if (elemet[i].link=== elemet[j].link) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+};
+
+const userSchema = new Schema({
+  name    : {type: String, require:[true, 'Este campo es requerido']},
+  lastName: {type: String, require:[true, 'Este campo es requerido']},
+  backgorund  : {
+    type:[String],
+    validate: [matchArray.bind(this, img), 'La Url de la imagen no es valida']
+  },
+  avatar  : {
+    type:[String],
+    validate: [matchArray.bind(this, img), 'La Url de la imagen no es valida']
+  },
   email   : {
     type     : String,
     lowercase: true,
-    required : true,
-    unique   : true
+    required : [true, 'Este campo es requerido'],
+    unique   : [true, 'Otro usuario está usando este correo'],
+    match : [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email ingresado es invalido']
   },
   verifiedUser: {
     type   : Boolean,
@@ -20,12 +60,14 @@ const userSchema     = new Schema({
     type: [{
       codeArea: {
         type    : String,
-        required: true,
+        required: [true, 'Este campo es requerido'],
+        default: '+58',
         enum    : arrayCodePhone
       },
       numberPhone: {
-        type    : Number,
-        required: true
+        type    : String,
+        required: [true, 'Este campo es requerido'],
+        match: [/^(04|02)([\d+]{9})$/, 'El formato valido para el Nro. telefonico es 04XXXXXXXXX']
       },
       verified: {
         type   : Boolean,
@@ -36,187 +78,67 @@ const userSchema     = new Schema({
         enum   : ['main','minor','ofice','home','work','local'],
         default: 'minor'
       }
-    }]
+    }],
+    validate: [uniqueValuePhone, 'No puede haber Nros telefonicos repetidos, ni mas de un telefono principal']
   },
   monthlySMS   : { type: Number, default: 25 },
   sendSMS      : { type: Number, default: 0 },
   activeOrder  : { type: [String], default: 0 },
   notifications: { type: [String] },
-  password     : { type: [String], select: false, required:true},
-  sex          : { type:String, enum: ['m','f','o'], required:true},
+  password     : {
+    type: [String],
+    select: false,
+    required:[true, 'Este campo es requerido'],
+    validate: [matchArray.bind(this, regExpPassword), 'La contraseña debetener minimo:\n2 letras minusculas.\n2 letras mayuculas.\n2 caracteres especiales.\nY tener mas de 8 caracteres.']
+  },
+  ci: {
+    type: String,
+    select: false,
+    required:[true, 'Este campo es requerido'],
+    unique: [true, 'Otro usuario está usando esta CI'],
+    match: [/^([V]-)([\d+]{8,9})$/,'El Formato valido para la cedula es V-XXXXXXXX']
+  },
+  ivss         : { type: [String], select: false},
+  cne          : { type: [String], select: false},
+  sex          : { type:String, enum: ['m','f','o'], required:[true, 'Este campo es requerido']},
   description  : { type:String },
   signupDate   : { type: Date, default: Date.now() },
   lastLogin    : Date,
+  birthdate    : {type:Date, select: false},
   social       : []
 });
 
-function validateCorrectData(type, objToValidate) {
-  let validatePromise = new Promise((resolve, reject) => {
-    let errors = [];
-    switch (type) {
-      case 'email':
-        let email = objToValidate;
-        if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)){
-          errors.push(`${email} it is not a valid Email adress!`);
-        }
-      break;
-      case 'phone':
-        let phone = objToValidate;
-        if (Array.isArray(phone)) {
-          phone.forEach((cell, index) => {
-            for (var i = 0; i < phone.length; i++) {
-              if (i === index || i < index){
-                continue;
-              }
-              if (phone[i].numberPhone === cell.numberPhone){
-                errors.push(`Duplicate Number Phone: ${phone[i].numberPhone}`);
-              }
-              if (cell.link === 'main' && phone[i].link === cell.link){
-                errors.push(`Duplicate Main Phone: ${cell.numberPhone} already  is Main`);
-              }
-            }
-            if (arrayCodePhone.includes(cell.codeArea) === false){
-              errors.push(`"${cell.codeArea}" it is not a valid Code Area`);
-            }
-            if (typeof cell.numberPhone !== 'number'){
-              errors.push(`${cell.numberPhone} it is not a valid Number Phone`);
-            }
-            if (['main', 'minor', 'ofice', 'home', 'work', 'local'].includes(cell.link) === false){
-              errors.push(`"${cell.link}" it is not a valid reference`);
-            }
-          });
-        } else {
-          if (arrayCodePhone.includes(phone.codeArea) === false){
-            errors.push(`"${phone.codeArea}" it is not a valid Code Area`);
-          }
-          if (['main', 'minor', 'ofice', 'home', 'work', 'local'].includes(phone.link) === false){
-            errors.push(`"${phone.link}" it is not a valid reference`);
-          }
-          if (typeof phone.numberPhone !== 'number'){
-            errors.push(`${phone.numberPhone} it is not a valid Number Phone`);
-          }
-        }
-      break;
-      case 'avatar':
-        let avatar = objToValidate;
-        if (avatar.length > 1){
-          errors.push('Too Many images');
-        }
-        if (!/\.(png|jpg|gif|ico|svg)$/.test(avatar)){
-          errors.push(`${avatar} it is not a valid image format!`);
-        }
-        break;
-      case 'password':
-        let password = objToValidate;
-        if (password.length > 1){
-          errors.push('Too Many passwords');
-        }
-        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/.test(password)){
-          errors.push(`${password} The password must have a minimum:\n2 lowercase letters.\n2 uppercase letters.\n2 special characters.\nIt must be greater than 8 characters.`);
-        }
-      break;
-      default:
-        return false;
-    }
-    errors = errors.join('\n');
-    if (errors.length > 0) {
-      reject(errors);
-    }
-    resolve();
-  });
-  return validatePromise;
+function comparePassword (hash, candidatePassword){
+  return bcrypt.compareSync(candidatePassword, hash);
 }
 
 userSchema.pre('save', function(next) {
-  User.find({'email':this.email}, (err, userFound)=>{
-    if (userFound.length>0){
-      next(new Error(`Another user is using this email: ${this.email}`));
-    }
-    let validatePromises = [];
-    if (this.email){
-      validatePromises.push(validateCorrectData('email', this.email));
-    }
-    if (this.phone){
-      validatePromises.push(validateCorrectData('phone', this.phone));
-    }
-    if (this.avatar){
-      validatePromises.push(validateCorrectData('avatar', this.avatar));
-    }
-    if (this.password){
-      validatePromises.push(validateCorrectData('password', this.password));
-    }
-    if (validatePromises.length>0)
-    {
-      Promise.all(validatePromises).then(()=>
-      {
-        let           salt = bcrypt.genSaltSync(10);
-        let           hash = bcrypt.hashSync(this.password[0], salt);
-        this.password[0]   = hash;
-        next();
-      })
-      .catch((err)=>
-      {
-        next(new Error(err));
-      });
-    }
-  });
+  let           salt = bcrypt.genSaltSync(10);
+  let           hash = bcrypt.hashSync(this.password[0], salt);
+  this.password[0]   = hash;
+  next();
 });
 
-userSchema.statics.findBeforeUpdate = function (query, update,callback)
-{
-  let flag = 0;
-  update.$push = {};
-  if(update.password&&update.confirmPassword){
-    flag++;
-    let salt                  = bcrypt.genSaltSync(10);
-    let hash                  = bcrypt.hashSync(update.password, salt);
-        update.$push.password = hash;
-    delete update.password;
+userSchema.pre('findOneAndUpdate', async function(next) {
+  if (this._update.password&&this._update.passwordnew&&this._update.passwordconfnew) {
+    const { password } = await this.model.findById(this._update.id).select('password');
+    const comparate = bcrypt.compareSync(this._update.password, password[password.length-1]);
+    if(comparate&&this._update.passwordnew===this._update.passwordconfnew&&this._update.password!==this._update.passwordnew){
+      let salt = bcrypt.genSaltSync(10);
+      let hash = bcrypt.hashSync(this._update.passwordnew, salt);
+      this._update.password.$push = hash;
+    }
   }
-  if(update.avatar){
-    flag++;
-    update.$push.avatar = update.avatar;
-    delete update.avatar;
-  }
-  if (!flag){
-    delete update.$push;
-  }
-  let validatePromises = [];
-  if (update.email){
-    validatePromises.push(validateCorrectData('email', update.email));
-  }
-  if (update.phone){
-    validatePromises.push(validateCorrectData('phone', update.phone));
-  }
-  if (update.$push&&update.$push.avatar){
-    validatePromises.push(validateCorrectData('avatar', update.$push.avatar));
-  }
-  if (update.$push&&update.$push.password){
-    validatePromises.push(validateCorrectData('password', update.$push.password));
-  }
-  if (validatePromises.length>0)
-  {
-    Promise.all(validatePromises).then(()=>
-    {
-      this.findByIdAndUpdate(query, update)
-        .exec(function(err, res) {
-            return callback(false, res);
-        });
-    })
-    .catch((err)=>
-    {
-      return callback(err);
-    });
-  }
-};
+  delete this._update.id;
+  this._update.password && delete this._update.password;
+  this._update.passwordnew && delete this._update.passwordnew;
+  this._update.passwordconfnew && delete this._update.passwordconfnew;
+  this.options.runValidators = true;
+  next();
+});
 
+userSchema.statics.comparePassword = comparePassword;
 
-userSchema.statics.comparePassword = async function (query, candidatePassword)
-{
-  let pass = await this.findOne(query).select('password');
-  pass = pass.password.toString();
-  return bcrypt.compareSync(candidatePassword, pass);
-};
 
 const User = mongoose.model('Users', userSchema);
 

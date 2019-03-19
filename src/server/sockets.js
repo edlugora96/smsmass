@@ -8,6 +8,7 @@ module.exports = (io,app) => {
       const decoded      = token && jwt.decode(token, config.SECRET_TOKEN);
       const id           = token && decoded._id;
       let   seccionUsers = app.get('seccionUsers');
+      console.log(users[id]);
       if (!users[id]) {
         socket.user = id;
         users[socket.user] = socket;
