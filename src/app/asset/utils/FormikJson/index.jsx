@@ -39,7 +39,7 @@ const FormShapes = {
 };
 
 const FormikJson = (props) => pug`
-  Formik(role="form").ui.form
+  Formik(role="form", name=props.formName).ui.form
     each elemt, index in props.template.components
       Structure(key=index,...props,...elemt, index=index, FormShapes=FormShapes)
 `;

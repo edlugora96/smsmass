@@ -3,21 +3,21 @@ import { saveLogin } from '$redux/store';
 
 const excResp = ({values, res, sign, verify}) => {
   if (res.status === 200 && verify) {
-    return res;
+    return {status:res.status, message:res.body.message};
   } else if (res.status === 200 && !verify) {
     saveLogin(res.body.token);
     localStorage.setItem('auth', res.body.token);
-    return res;
+    return {status:res.status, message:res.body.message};
   } else if(sign && res.status !== 200) {
     localStorage.removeItem('auth');
     saveLogin(null);
-    return res;
+    return {status:res.status, message:res.response.body.message};
+  } else if(res.status === 200) {
+    localStorage.removeItem('auth');
+    saveLogin(null);
+    return {status:res.status, message:res.body.message};
   } else {
-    if (res.response && res.response.body) {
-      return res;
-    }else {
-      return res;
-    }
+    return {status:res.status, message:res.response.body.message};
   }
 };
 
@@ -26,7 +26,7 @@ class Auth {
     this.status = false;
   }
   async login(values){
-    const res = await fetchServer('users/signIn', values, true);
+    const res = await fetchServer('users/login', values, true);
     return excResp({values, res});
   }
   async signup(values){
@@ -35,6 +35,10 @@ class Auth {
   }
   async update(values, id ){
     const res = await fetchPutServer('users/update/'+values._id, values);
+    return excResp({values, res});
+  }
+  async uploadFile(values){
+    const res = await fetchServer('users/manageUpload', values, true);
     return excResp({values, res});
   }
   async verifications(values){

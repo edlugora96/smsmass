@@ -1,15 +1,17 @@
 const mongoose       = require('mongoose');
 const bcrypt         = require('bcrypt-nodejs');
 const arrayCodePhone = require('../services/onlyCodePhone.js');
-const Schema         = mongoose.Schema;
 
+const Schema         = mongoose.Schema;
 const regExpPassword = '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})';
 const img = '(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})';
 const regExpOutput = (regExp)=>new RegExp(regExp,"g");
 const matchArray = (regExp, elemet) => {
-  if (elemet.length>1) {
+  if (elemet.length===0) {
+    return true;
+  } else if (elemet.length>1) {
     return false;
-  } else if (elemet===''||elemet===' ') {
+  } else if (elemet==='') {
     return false;
   } else {
     return regExpOutput(regExp).test(elemet[0]);
@@ -35,11 +37,27 @@ const uniqueValuePhone = (elemet) => {
 };
 
 const userSchema = new Schema({
+  userCredId: {
+    type:String,
+    unique: true,
+    select:false
+  },
   name    : {type: String, require:[true, 'Este campo es requerido']},
   lastName: {type: String, require:[true, 'Este campo es requerido']},
+  dni: {type: String, require:[true, 'Este campo es requerido']},
   backgorund  : {
     type:[String],
     validate: [matchArray.bind(this, img), 'La Url de la imagen no es valida']
+  },
+  password:{
+    type:[String],
+    require: [true, 'Este campo es requerido'],
+    validate: [matchArray.bind(this, regExpPassword), 'La contraseña debetener minimo:\n2 letras minusculas.\n2 letras mayuculas.\n2 caracteres especiales.\nY tener mas de 8 caracteres.'],
+    select:false
+  },
+  cnames:{
+    type:[String],
+    require: [true, 'Este campo es requerido']
   },
   avatar  : {
     type:[String],
@@ -51,10 +69,6 @@ const userSchema = new Schema({
     required : [true, 'Este campo es requerido'],
     unique   : [true, 'Otro usuario está usando este correo'],
     match : [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email ingresado es invalido']
-  },
-  verifiedUser: {
-    type   : Boolean,
-    default: false,
   },
   phone: {
     type: [{
@@ -81,29 +95,9 @@ const userSchema = new Schema({
     }],
     validate: [uniqueValuePhone, 'No puede haber Nros telefonicos repetidos, ni mas de un telefono principal']
   },
-  monthlySMS   : { type: Number, default: 25 },
-  sendSMS      : { type: Number, default: 0 },
-  activeOrder  : { type: [String], default: 0 },
   notifications: { type: [String] },
-  password     : {
-    type: [String],
-    select: false,
-    required:[true, 'Este campo es requerido'],
-    validate: [matchArray.bind(this, regExpPassword), 'La contraseña debetener minimo:\n2 letras minusculas.\n2 letras mayuculas.\n2 caracteres especiales.\nY tener mas de 8 caracteres.']
-  },
-  ci: {
-    type: String,
-    select: false,
-    required:[true, 'Este campo es requerido'],
-    unique: [true, 'Otro usuario está usando esta CI'],
-    match: [/^([V]-)([\d+]{8,9})$/,'El Formato valido para la cedula es V-XXXXXXXX']
-  },
-  ivss         : { type: [String], select: false},
-  cne          : { type: [String], select: false},
   sex          : { type:String, enum: ['m','f','o'], required:[true, 'Este campo es requerido']},
   description  : { type:String },
-  signupDate   : { type: Date, default: Date.now() },
-  lastLogin    : Date,
   birthdate    : {type:Date, select: false},
   social       : []
 });
@@ -140,7 +134,8 @@ userSchema.pre('findOneAndUpdate', async function(next) {
 userSchema.statics.comparePassword = comparePassword;
 
 
-const User = mongoose.model('Users', userSchema);
+// let  User = mongoose.model(collection, userSchema);
+// User = new User();
 
-module.exports = User;
 
+module.exports = userSchema;

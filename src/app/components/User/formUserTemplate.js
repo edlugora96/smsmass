@@ -23,6 +23,13 @@ const template = (user) =>{
   return {
     components: [
       {
+        type: 'file',
+        title: 'Subir imagem',
+        attr:{
+          name:'sampleFile'
+        }
+      },
+      {
         type: 'text',
         title: 'Nombre (s)',
         attr: {
@@ -128,7 +135,11 @@ const template = (user) =>{
         FormShape: {
           Input: (props) =>{
             return pug`
-              VerifyInput(init toEmail=props.values["email"], toValidate="email" isVerificate=props.initialValues[props.attr.name], ...props, verification=verification)
+              if (props.readOnly)
+                p= props.verifiedUser? 'Correcto' : 'Sin verificar'
+
+              else
+                VerifyInput(init toEmail=props.values["email"], toValidate="email" isVerificate=props.initialValues[props.attr.name], ...props, verification=verification)
             `;
           }
           /*Input: (props) => {
@@ -258,7 +269,7 @@ const template = (user) =>{
                     ErrorMessage(name="phone["+index+"].link" key=index+inpt+inpt.link+"ErrorMessage")
 
                   if (!inpt.verified && !readOnly)
-                    VerifyInput(init phone=inpt.numberPhone contacts=[{phone:inpt.numberPhone}] toValidate="phone",isVerificate=inpt.verified, ...props, verification=verification key=index+inpt.verified+"buttonVerify")
+                    VerifyInput(name="phone["+index+"].numberPhone" init phone=props.values.phone[index].numberPhone contacts=[{phone:inpt.numberPhone}] toValidate="phone",isVerificate=inpt.verified, ...props, verification=verification key=index+inpt.verified+"buttonVerify")
 
                   else
                     p(key=index+inpt.verified+"pTag")= inpt.verified? 'Correcto' : 'Sin verificar'
@@ -302,7 +313,8 @@ const template = (user) =>{
       ...user,
       password:'',
       passwordnew:'',
-      passwordconfnew:''
+      passwordconfnew:'',
+      sampleFile: ''
     }),
     validSchema: Yup.object().shape({
       email: Yup.string(),
@@ -337,6 +349,7 @@ const template = (user) =>{
       // .required('Este campo es requerido')
     }),
     onSubmit: async (values) => {
+      Auth.uploadFile(values);
       // Auth.update(values);
       console.log(values);
     },

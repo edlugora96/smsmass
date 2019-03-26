@@ -5,10 +5,10 @@ export default {
     components: [
       {
         type: 'text',
-        title: 'Email',
+        title: 'user',
         attr: {
-          name: 'email',
-          placeholder: 'Ingrese su(s) email',
+          name: 'user',
+          placeholder: 'Ingrese su(s) user',
           id: 'formBasicUser'
         }
       },
@@ -30,7 +30,7 @@ export default {
       }
     ],
     initianState: () => ({
-      email: '',
+      user: '',
       password: '',
       ci: '',
       name: '',
@@ -38,12 +38,11 @@ export default {
       phone:{
         numberPhone: ''
       },
-      sex:false,
+      sex:'f',
     }),
     validSchema: Yup.object().shape({
-      email: Yup.string()
-        .required('Este campo es requerido')
-        .email('Ingrese un Email valido'),
+      user: Yup.string()
+        .required('Este campo es requerido'),
       password: Yup.string()
         .required('Este campo es requerido')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, { excludeEmptyString: true, message: 'La contraseña se alpha numerico y debe tener minimo:\n1 letras minusculas.\n1 letras mayuculas.\n1 caracteres especiales.\nY tener mas de 8 caracteres.'})
@@ -59,7 +58,7 @@ export default {
         type: 'text',
         title: 'CI',
         attr: {
-          name: 'ci',
+          name: 'dni',
           placeholder: 'V-XXXXXX',
           id: 'formSinupci'
         }
@@ -122,9 +121,9 @@ export default {
       }
     ],
     initianState: () => ({
-      email: '',
+      user: '',
       password: '',
-      ci: '',
+      dni: '',
       name: '',
       lastName: '',
       birthdate: '',
@@ -134,15 +133,14 @@ export default {
       sex:'f',
     }),
     validSchema: Yup.object().shape({
-      email: Yup.string()
-        .required('Este campo es requerido')
-        .email('Ingrese un Email valido'),
+      user: Yup.string()
+        .required('Este campo es requerido'),
       password: Yup.string()
         .required('Este campo es requerido')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, { excludeEmptyString: true, message: 'La contraseña debetener minimo:\n2 letras minusculas.\n2 letras mayuculas.\n2 caracteres especiales.\nY tener mas de 8 caracteres.'}),
-      ci: Yup.string()
+      dni: Yup.string()
         .required('Este campo es requerido')
-        .matches(/^([V]-)([\d+]{8,9})$/, { excludeEmptyString: true, message: 'Numero de cedula invalido'}),
+        .matches(/^([V]-)([\d+]{7,9})$/, { excludeEmptyString: true, message: 'Numero de cedula invalido'}),
       name: Yup.string()
         .required('Este campo es requerido'),
       lastName: Yup.string()

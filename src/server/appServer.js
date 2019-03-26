@@ -1,23 +1,24 @@
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors         = require ( 'cors');
+const cors         = require ('cors');
 const express      = require('express');
 const helmet       = require('helmet');
 const http         = require('http');
 const morgan       = require('morgan');
 const nodemailer   = require('nodemailer');
-const redis        = require('redis');
+// const redis        = require('redis');
 const session      = require('express-session');
-const RedisStore   = require('connect-redis')(session);
+// const RedisStore   = require('connect-redis')(session);
 const socketio     = require('socket.io');
 const smsApi       = require('./routes/sms.js');
 const userApi      = require('./routes/user.js');
 const config       = require('./services/globalConfig');
+const dbAuth        = require('./mongo/db-connection');
 
 const app   = express();
-const client= redis.createClient();
-client.select(1);
-client.flushdb();
+// const client= redis.createClient();
+// client.select(1);
+// client.flushdb();
 const crosOptions = {
   'origin'              : '*',
   'methods'             : 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -26,21 +27,9 @@ const crosOptions = {
 };
 const optionsSession = {
   secret           : config.SECRET_TOKEN,
-  resave           : false,
-  saveUninitialized: true,
-  name: 'minor',
-  cookie: {
-      path: '/',
-      maxAge:  1800000  //30 mins
-  },
-  store: new RedisStore({
-      host:'127.0.0.1',
-      port: 6379,
-      db: 1,
-      prefix:'elg',
-      ttl: (7 * 60 * 60),
-      client:client
-  })
+  key: 'express.sid',
+  resave: true,
+  saveUninitialized: false
 };
 
 const {
@@ -79,16 +68,20 @@ app.use(session(optionsSession));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Set Passport
 require('./passport')(app);
 
 // API Set accesable vars
 app.set('dataStack', []);
 app.set('userWthActiveOrder', {});
+app.set('gSession', {});
 app.set('seccionUsers', {});
 app.set('smsCountStack', 0);
 app.set('sendingStatus', 'end');
 app.set('mail', transporter);
-app.set('redis', client);
+// app.set('redis', client);
+app.set('userManager', dbAuth({user:'USERS_MANAGER',pass:config.USERS_MANAGER_PASS,poolSize:10}));
+app.set('userCredsManager', dbAuth({user:'USERS_CREDS_MANAGER',pass:config.USERS_CREDS_MANAGER_PASS,poolSize:10}));
 
 // Set routes API
 app.use('/sms', smsApi);
@@ -100,7 +93,7 @@ app.get('/',(req, res)=>{
 
 app.disable('x-powered-by');
 
-// Set Passport ans Socket.IO
+// Set Socket.IO
 require('./sockets')(io,app);
 
 module.exports = server;

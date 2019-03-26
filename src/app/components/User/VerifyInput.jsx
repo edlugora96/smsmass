@@ -6,20 +6,29 @@ import store from '$redux/store.js';
 export const verifyCtrl = (Component) => {
   const VerifyCtrl = (props) =>{
     const [wantVerify, setWantVerify] = useState(false);
-    const [wantSend, setWantSend] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [errMessage, setErrMessage] = useState('');
     const verify = async ({step:init, confBtn, want, send, verifyText: verify}) => {
-      !confBtn && setWantSend(!wantSend);
+      const regExpValidate = props.toValidate==='email'? new RegExp("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",'gim'): new RegExp("^(04|02)([\\d+]{9})$",'gim');
+      const verifyTargget = props.toEmail?props.toEmail: props.phone;
+      if (!regExpValidate.test(verifyTargget)) {
+        const text = props.toValidate==='email'? 'correo' : 'nro. de teléfono'
+        setErrMessage(`${verifyTargget}: El ${text} no es valido.`)
+        return false;
+      }
+      setErrMessage('');
       setWantVerify(send);
-      if(confBtn&&!init&&wantVerify&&verify==='') {
+      if(!init&&verify==='') {
+        setErrMessage('Por favor escriba el codigo de validación que se le ha enviado.')
         return false;
       }
       setLoading(true);
       const res = send&& await props.verification({...props,init,verify});
+      setErrMessage(res.message);
       if (confBtn&&res.status===200) {
         setLoading(false);
         setWantVerify(false);
-      } else if (res||!res){
+      } else{
         setLoading(false);
       }
     };
@@ -30,39 +39,36 @@ export const verifyCtrl = (Component) => {
       `;
     } else {
       return pug`
-        Component(verify=verify wantSend=wantSend wantVerify=wantVerify setWantSend=setWantSend, ...props)
+        Component(errMessage=errMessage verify=verify wantVerify=wantVerify, ...props)
       `;
     }
   };
   return VerifyCtrl;
 };
 
-
 const VerifyInput = (props) => {
   const {
     readOnly,
     verify,
-    wantSend,
     wantVerify,
-    setWantSend
+    errMessage
   } = props;
   const inputCodeVerification = useRef(null);
   return pug`
-    if (readOnly)
-      input(type=props.type checked=props.isVerificate)
-
-    else if (!props.isVerificate&&!readOnly)
-      button(type="button" onClick=()=>{verify({send:wantSend,step:true, want:!wantVerify});setWantSend(!wantSend)})= wantVerify? 'Cancelar verificación' : 'Verificar'
+    if (!wantVerify&&!props.isVerificate&&!readOnly)
+      button(type="button" onClick=()=>{!wantVerify&&verify({send:true,step:true, want:true})})= 'Verificar'
 
     else if (props.isVerificate&&!readOnly)
       p Correcto
 
-    if(wantVerify&&!props.isVerificate)
-      button(type="button" onClick=()=>{verify({send:true,step:true, want:true})}) Renviar
+    else if(wantVerify&&!props.isVerificate)
+      button(type="button" onClick=()=>{wantVerify&&verify({send:true,step:true})}) Renviar
 
-      button(type="button" onClick=()=>{verify({verifyText:inputCodeVerification.current.value ,send:true, want:false,step:false, confBtn:true})}) Confirmar
+      button(type="button" onClick=()=>{wantVerify&&verify({verifyText:inputCodeVerification.current.value ,send:true, step:false, confBtn:true})}) Confirmar
 
       input(type="text" name="codeVerification" ref=inputCodeVerification placeholder="E-XXXXXXX")
+
+    p= errMessage
   `;
 };
 const mapStateToProps = () => ({

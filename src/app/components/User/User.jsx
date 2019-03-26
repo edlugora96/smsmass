@@ -46,7 +46,7 @@ const User = (props) => {
       .from.ui.card.profile
         button(onClick=()=>setReadOnly(!readOnly))= readOnly? 'Editar' : 'Cancelar Edicion'
 
-        FormikJson(verfySession=verfySession setVerfySession=setVerfySession template=template(user), ...props, readOnly=readOnly, setReadOnly=setReadOnly)
+        FormikJson(formName="userUpdate" verfySession=verfySession setVerfySession=setVerfySession template=template(user), ...props, readOnly=readOnly, setReadOnly=setReadOnly)
   `;
 };
 

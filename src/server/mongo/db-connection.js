@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/edlugora', {useMongoClient: true});
+const mongooseAuth = (opt) =>{
+  return mongoose.createConnection('mongodb://localhost:27017/edlugora', { useNewUrlParser: true, ...opt});
+};
 
-module.exports = mongoose;
+module.exports = mongooseAuth;

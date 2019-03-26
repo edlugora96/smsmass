@@ -1,6 +1,8 @@
 import React from 'react';
 import { areaInput, selecttInput, generalInput } from './Inputs.jsx';
-
+const handlerFile = (event,props)=> {
+  props.setFieldValue(props.attr.name, event.currentTarget.files[0]);
+};
 const Structure = (props) => {
   const {
     FormShapes,
@@ -28,6 +30,24 @@ const Structure = (props) => {
           if(!readOnly)
             MerFormShapes.ErrorMessage(...props)
     `;
+    }
+  }
+  else if (props.type === 'file') {
+    if(Component) {
+      return pug`
+        Component(...props)
+      `;
+    } else {
+      return pug`
+        MerFormShapes.Parent(key=props.index+props.title,...props)
+          if (props.label !== 'none')
+            MerFormShapes.Label(...props)
+
+          input(...props.attr, onChange=e=>handlerFile(e,props), type="file" )
+
+          if(!readOnly)
+            MerFormShapes.ErrorMessage(...props)
+      `;
     }
   }
   else if (props.type === 'textContainer') {

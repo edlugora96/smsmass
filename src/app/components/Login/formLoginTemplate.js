@@ -6,10 +6,10 @@ export default {
     components: [
       {
         type: 'text',
-        title: 'Email',
+        title: 'Usuario',
         attr: {
-          name: 'email',
-          placeholder: 'Ingrese su(s) email',
+          name: 'user',
+          placeholder: 'Ingrese su(s) usuario o email',
           id: 'formBasicUser'
         }
       },
@@ -39,19 +39,19 @@ export default {
       }
     ],
     initianState: () => ({
-      email: '',
+      user: '',
       password: '',
       remember: false
     }),
     validSchema: Yup.object().shape({
-      email: Yup.string()
-        .required('Required')
-        .email('Ingrese un Email valido'),
+      user: Yup.string()
+        .required('Required'),
       password: Yup.string()
         .required('Required'),
     }),
     onSubmit: async (values, { props }) => {
-      Auth.login(values, props);
+      const res = await Auth.login(values, props);
+      console.log(res);
     },
   },
 };

@@ -1,32 +1,62 @@
 // const mongoose      = require('mongoose');
-const passport            = require('passport');
-const LocalStrategy       = require('passport-local').Strategy;
-const User                = require('../mongo/modelUser.js');
+const passport      = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+// const dbAuth        = require('../mongo/db-connection');
+const userSchema   = require('../mongo/modelUser');
+// const User                = require('../mongo/modelUser.js');
+
+// const config = require('../services/globalConfig');
 
 function passportIni (app) {
   const localOptios = {
-    usernameField: 'email',
+    usernameField: 'user',
     passwordField: 'password',
     passReqToCallback: true
   };
   const localSignIn =  new LocalStrategy(
     localOptios,
-    async (req, email, password, done) =>{
+    async (req, user, password, done) =>{
+      const connect = req.app.get('userManager');
+      const User = connect.model('user',userSchema);
       try {
-        const userFound = await User.findOne({'email': email}).select('backgorund avatar verifiedUser monthlySMS sendSMS activeOrder notifications signupDate social _id phone name lastName email sex password');
-        // const comparatePass = await User.comparePassword(userFound.password[userFound.password.length-1], password);
-        // console.log(comparatePass, userFound.password[userFound.password.length-1], password);
-        delete userFound.password;
-        if(!userFound){
-          return done(null, false, {message:`${email} User not found.`});
+        const userFound = await User.aggregate([
+          { '$match': { 'cnames': user } },
+          {
+            $lookup:
+            {
+              from: 'userscreds',
+              localField: 'userCredId',
+              foreignField: 'userId',
+              as: 'cred'
+            }
+          },
+          {
+            '$project' : {
+              userCredId:0,
+              cred:{
+                cne:0,
+                userId:0,
+                ivss:0,
+                _id:0,
+                __v:0,
+              }
+            }
+          }
+        ]);
+        let userData = userFound&&Object.assign({},...userFound);
+            userData.cred = userData&&Object.assign({},...userFound[0].cred);
+        const comparatePass = await User.comparePassword(userData.password[userData.password.length-1], password);
+        delete userData.password;
+        if(!userData){
+          return done(null, false, {message:`${user} Usuario no registrado.`});
         }
-        else if (false)
+        else if (!comparatePass)
         {
-          return done(null, false, {message: 'Error to Sign in.'});
+          return done(null, false, {message: 'Error desconocido.'});
         }
-        return done(null, userFound);
+        return done(null, userData);
       } catch (error) {
-        done(error,false);
+        return done(error,false);
       }
     }
     );
